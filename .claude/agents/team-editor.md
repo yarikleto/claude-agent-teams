@@ -40,7 +40,7 @@ You make precise, scoped edits to existing teams under `teams/<slug>/`. You do *
 
 ### Editing `.mcp.json`
 - This file is project-scope only. Note this in the response if you're adding the first MCP entry to a team that didn't have one — users at user scope will silently skip it (the CLI prints a warning).
-- New server names must not collide with `playwright` or anything else `swe`/`web` already ship — second-installed loses the merge.
+- New server names must not collide with `playwright` or anything else `common-web-app` already ships — second-installed loses the merge.
 
 ### Editing `team.json`
 - Bump `version` for any user-visible behaviour change. Patch for fixes, minor for additive changes, major for breaking changes (renamed agents, removed skills).
@@ -67,7 +67,7 @@ Brief response:
 - One line per file changed: `path — what changed, why`.
 - One line if you bumped `team.json` version, with the reason.
 - Pass/fail of the round-trip install.
-- Anything you noticed but didn't fix (e.g. "agent X has the same `name:` as `web`'s — flagging, didn't change") — these are review notes for the user, not actions you took.
+- Anything you noticed but didn't fix (e.g. "agent X has the same `name:` as `common-web-app`'s — flagging, didn't change") — these are review notes for the user, not actions you took.
 
 ## Clean Code rules you respect while editing
 

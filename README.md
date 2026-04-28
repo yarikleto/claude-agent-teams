@@ -31,8 +31,8 @@ Think of it as `claude-skills`, scaled up to teams.
 npx @yarikleto/claude-agent-teams              # interactive menu
 npx @yarikleto/claude-agent-teams list         # show all teams + installed state
 npx @yarikleto/claude-agent-teams add          # interactive picker
-npx @yarikleto/claude-agent-teams add swe --scope project
-npx @yarikleto/claude-agent-teams remove swe --scope project
+npx @yarikleto/claude-agent-teams add common-web-app --scope project
+npx @yarikleto/claude-agent-teams remove common-web-app --scope project
 ```
 
 Flags: `--scope user|project`, `-y/--yes`, `-h/--help`, `-v/--version`.
@@ -60,7 +60,7 @@ Hook command paths use `${CLAUDE_PLUGIN_ROOT}` in the team source. On install th
 - 📁 project scope → `${CLAUDE_PROJECT_DIR}/.claude/agent-teams/<team>/...`
 - 🏠 user scope → `$HOME/.claude/agent-teams/<team>/...`
 
-Agent and command filenames are prefixed with the team slug (e.g. `swe-architect.md`, `swe-init.md`) so two teams can coexist without colliding.
+Agent and command filenames are prefixed with the team slug (e.g. `common-web-app-architect.md`, `common-web-app-init.md`) so two teams can coexist without colliding.
 
 ### What `remove` does
 
@@ -77,7 +77,7 @@ No guessing, no `rm -rf`-ing your `.claude/` folder.
 
 | Team | What it does |
 | --- | --- |
-| [`swe`](./teams/swe) | A full software-engineering org inside Claude Code — orchestrator + 10 specialized agents (architect, DBA, designer, developer, devops, manual-qa, researcher, reviewer, tester, ux-engineer), 10 skills covering kickoff → sprint → sync, and 5 hooks for session start, iron-rule check, auto-format, save-progress, and post-commit reminders. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin). |
+| [`common-web-app`](./teams/common-web-app) | A full software-engineering org tuned for typical web applications (frontend, backend, full-stack SaaS) — orchestrator + 10 specialized agents (architect, DBA, designer, developer, devops, manual-qa, researcher, reviewer, tester, ux-engineer), 10 skills covering kickoff → sprint → sync, and 5 hooks for session start, iron-rule check, auto-format, save-progress, and post-commit reminders. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin). |
 
 ## Authoring a team
 

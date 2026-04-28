@@ -27,7 +27,7 @@ Go through each block. For every issue, note: severity (`blocker` / `risk` / `ni
 
 ### 2. Agent files (`agents/*.md`)
 - Frontmatter parses (delimited by `---` lines). Required keys: `name`, `description`, `tools`. Recommended: `model`, `maxTurns`.
-- **Name collision risk.** For each agent, check whether the bundled teams (`teams/swe`, `teams/web`) — or any other team in the repo — also use the same `name:` value. If yes, flag as a `risk` because installing both teams will collide.
+- **Name collision risk.** For each agent, check whether the bundled team (`teams/common-web-app`) — or any other team in the repo — also uses the same `name:` value. If yes, flag as a `risk` because installing both teams will collide.
 - `tools:` lists only tools the body actually uses. Over-broad tool grants are a `risk`.
 - `description` clearly states when to use this agent and what it refuses to do.
 - Body length is proportional to complexity — flag as `nit` if it's a 500-line essay for a one-line role, or a one-liner for a major role.
@@ -61,7 +61,7 @@ Go through each block. For every issue, note: severity (`blocker` / `risk` / `ni
 - Valid JSON, shape `{ "mcpServers": { ... } }`.
 - No secrets / API keys checked in.
 - The `team.json` description warns that MCP servers only install at project scope (since the CLI silently skips them at user scope, with a warning).
-- Server names don't conflict with what `swe`/`web` ship (e.g. `playwright`) — if they do, flag that the *second* team installed will skip the duplicate (per `installTeam`).
+- Server names don't conflict with what `common-web-app` ships (e.g. `playwright`) — if they do, flag that the *second* team installed will skip the duplicate (per `installTeam`).
 
 ### 8. Clean Code violations
 

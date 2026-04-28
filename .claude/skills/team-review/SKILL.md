@@ -23,7 +23,7 @@ Send the `team-reviewer` subagent with:
 - a pointer to `CLAUDE.md` for the install model,
 - explicit instruction to run the round-trip install test in a temp dir.
 
-The subagent reads everything under `teams/<slug>/`, checks frontmatter, name collisions against `teams/swe` and `teams/web`, hook hygiene, script executable bits, and `.mcp.json` collisions, then installs and removes the team in a sandbox.
+The subagent reads everything under `teams/<slug>/`, checks frontmatter, name collisions against `teams/common-web-app`, hook hygiene, script executable bits, and `.mcp.json` collisions, then installs and removes the team in a sandbox.
 
 ## Step 3 — Surface the punch list
 

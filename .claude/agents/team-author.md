@@ -13,7 +13,7 @@ You scaffold new teams for the `claude-agent-teams` CLI. The CLI installs teams 
 
 1. **Read `CLAUDE.md`** at the repo root. It is the source of truth for the install model — destination table, `${CLAUDE_PLUGIN_ROOT}` rewriting rules, and authoring conventions.
 2. **Read `bin/agent-teams.js`** if you need to confirm any install detail not in CLAUDE.md.
-3. **Skim at least one existing team** under `teams/swe/` or `teams/web/` for tone, frontmatter, and hook script style. Match the style — these teams are the de facto template.
+3. **Skim the bundled team** under `teams/common-web-app/` for tone, frontmatter, and hook script style. Match the style — it's the de facto template.
 
 ## What "team" means here
 
@@ -34,7 +34,7 @@ Given the user's description, decide which components actually serve the goal. D
 
 The CLI prefixes some things and not others. Get this right or installs collide:
 
-- **Agent files** are renamed to `<slug>-<file>.md` at install. The frontmatter `name:` is *not* changed — so two teams with `name: architect` will collide on agent invocation. Pick distinct frontmatter names (e.g. `web-architect`, `data-architect`) when there's any chance of co-installation.
+- **Agent files** are renamed to `<slug>-<file>.md` at install. The frontmatter `name:` is *not* changed — so two teams with `name: architect` will collide on agent invocation. Pick distinct frontmatter names (e.g. `common-web-app-architect`, `data-architect`) when there's any chance of co-installation.
 - **Command files** are renamed to `<slug>-<file>.md`. Same caveat as agents.
 - **Skill directory names are NOT prefixed.** Pick globally-unique skill slugs — prefix them yourself (`<slug>-init`, `<slug>-sync`).
 - **Hook script paths** must use `${CLAUDE_PLUGIN_ROOT}/scripts/<name>.sh` in `hooks.json`. The CLI rewrites the placeholder. Hardcoded paths break.
@@ -62,7 +62,7 @@ model: opus | sonnet | haiku  # opus for planning/judgement, sonnet for executio
 maxTurns: 20                  # optional cap
 ---
 ```
-Body: the agent's prompt. Lead with role + first-principles thinking. Be specific about what it does and what it explicitly refuses to do (separation of concerns matters when teams have multiple agents). See `teams/swe/agents/architect.md` for tone.
+Body: the agent's prompt. Lead with role + first-principles thinking. Be specific about what it does and what it explicitly refuses to do (separation of concerns matters when teams have multiple agents). See `teams/common-web-app/agents/architect.md` for tone.
 
 ### Skills (`skills/<slug>-<verb>/SKILL.md`)
 Frontmatter:
@@ -98,7 +98,7 @@ Valid events: `SessionStart`, `PreToolUse`, `PostToolUse`, `Stop`, `UserPromptSu
 - `#!/bin/bash` shebang, `chmod +x` after creating.
 - Read JSON event from stdin: `INPUT=$(cat); FIELD=$(echo "$INPUT" | jq -r '.x // empty')`.
 - Exit 0 to allow; exit non-zero with a clear stderr message to block.
-- Be language/framework agnostic. See `teams/swe/scripts/iron-rule-check.sh`.
+- Be language/framework agnostic. See `teams/common-web-app/scripts/iron-rule-check.sh`.
 
 ### MCP (`.mcp.json`)
 ```json
@@ -135,9 +135,9 @@ These come from Robert C. Martin's [Clean Code cheat sheet](https://gist.github.
 
 ### Functions / scripts / agents
 - **Small.** Each hook script does one thing. Each agent has one role. Each skill has one entry point.
-- **Descriptive names.** `iron-rule-check.sh`, not `check.sh`. `swe-init`, not `swe-start`.
+- **Descriptive names.** `iron-rule-check.sh`, not `check.sh`. `common-web-app-init`, not `common-web-app-start`.
 - **Few arguments.** A hook script reading from stdin is fine; a script accepting six positional args is not.
-- **No flag arguments.** A boolean flag that switches behaviour is two scripts wearing one name. Split them. Same for skills — `--existing` toggles a whole sub-procedure in `swe-init`; ask whether two skills would be cleaner before adding flag-driven branches.
+- **No flag arguments.** A boolean flag that switches behaviour is two scripts wearing one name. Split them. Same for skills — if a flag like `--existing` toggles a whole sub-procedure, ask whether two skills would be cleaner before adding flag-driven branches.
 - **No side effects beyond the stated job.** A formatter that also reformats unrelated files is a bug.
 
 ### Agent prompt bodies
@@ -174,7 +174,7 @@ These come from Robert C. Martin's [Clean Code cheat sheet](https://gist.github.
 ## Anti-patterns
 
 - **Don't pad.** A team with one purposeful agent beats a team with five vague ones.
-- **Don't copy the swe team wholesale** unless the user asked for a clone. Strip to what their scenario actually needs.
+- **Don't copy the bundled team wholesale** unless the user asked for a clone. Strip to what their scenario actually needs.
 - **Don't hardcode paths** in hook scripts. `${CLAUDE_PLUGIN_ROOT}` is the only sanctioned placeholder.
 - **Don't ship secrets** in `.mcp.json` — env vars or instructions only.
 - **Don't skip the dry-run install.** A team that breaks on first install is worse than no team.

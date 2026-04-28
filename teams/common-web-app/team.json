@@ -1,0 +1,8 @@
+{
+  "name": "common-web-app",
+  "description": "A full software engineering team for typical web applications — CEO orchestrator + 10 specialized agents + 9 skills, tuned for frontend, backend, and full-stack SaaS work.",
+  "version": "0.1.0",
+  "author": "Yaroslav P",
+  "license": "MIT",
+  "source": "https://github.com/yarikleto/claude-swe-plugin"
+}
