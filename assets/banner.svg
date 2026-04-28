@@ -50,8 +50,8 @@
       <text x="31" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">CLI</text>
       <rect x="72" y="0" rx="6" ry="6" width="92" height="22" fill="#5CC8C8"/>
       <text x="118" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">npx-friendly</text>
-      <rect x="174" y="0" rx="6" ry="6" width="80" height="22" fill="#FF8AAA"/>
-      <text x="214" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">add &amp; remove</text>
+      <rect x="174" y="0" rx="6" ry="6" width="108" height="22" fill="#FF8AAA"/>
+      <text x="228" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">add &amp; remove</text>
     </g>
   </g>
 </svg>
