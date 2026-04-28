@@ -1,5 +1,5 @@
 ---
-name: swe-dba-schema
+name: common-web-app-dba-schema
 description: DBA designs the database schema from the system design — tables, relationships, indexes, constraints, migration plan. Works with architect on data model. Produces .claude/database-schema.md. Use after system design is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw

@@ -1,5 +1,5 @@
 ---
-name: swe-sprint
+name: common-web-app-sprint
 description: CEO runs the task execution cycle — picks the next task, sends developer to implement with full freedom, then QA verifies the goal is achieved with tests, reviewer checks quality. Updates task status in .claude/tasks/. Repeats until milestone is complete. Use when ready to start building.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent

@@ -1,5 +1,5 @@
 ---
-name: swe-architect-tasks
+name: common-web-app-architect-tasks
 description: Architect decomposes the system design into a hierarchical task breakdown — milestones, tasks, and subtasks with acceptance criteria, dependencies, and parallelization plan. Walking skeleton first, then vertical slices. Use after system design is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw

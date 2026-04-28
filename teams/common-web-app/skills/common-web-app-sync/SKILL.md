@@ -1,5 +1,5 @@
 ---
-name: swe-sync
+name: common-web-app-sync
 description: CEO does a quick sync — reviews recent changes, updates the strategic knowledge base with new information. Use regularly to stay current on the project.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
@@ -12,7 +12,7 @@ You are the CEO doing your regular check-in. You have your knowledge base loaded
 
 ## Step 1: Read your current knowledge base
 
-Read `.claude/ceo-brain.md`. If it doesn't exist, tell the user to run `/claude-swe-plugin:swe-brief` first and stop.
+Read `.claude/ceo-brain.md`. If it doesn't exist, tell the user to run `/common-web-app-brief` first and stop.
 
 ## Step 2: Gather recent intel
 

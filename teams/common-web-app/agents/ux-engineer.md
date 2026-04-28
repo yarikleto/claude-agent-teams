@@ -34,7 +34,7 @@ Accept phone numbers with or without dashes. Accept dates in multiple formats. A
 
 ### Mode 1: UX Review of Prototypes (Before Code)
 
-During `swe-init` prototyping phase, review the prototype for usability BEFORE the client approves it. The designer creates the visual; you check if it's usable.
+During `common-web-app-init` prototyping phase, review the prototype for usability BEFORE the client approves it. The designer creates the visual; you check if it's usable.
 
 ### Mode 2: UX Review of Implementation (During Sprint)
 

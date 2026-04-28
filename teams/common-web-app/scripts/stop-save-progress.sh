@@ -28,7 +28,7 @@ fi
 if [ -f ".claude/ceo-brain.md" ]; then
   LAST_UPDATED=$(grep -o 'Last updated: [0-9-]*' .claude/ceo-brain.md 2>/dev/null | head -1)
   if [ -n "$LAST_UPDATED" ]; then
-    MESSAGES="${MESSAGES}CEO brain last updated: $LAST_UPDATED — consider running /claude-swe-plugin:swe-sync if stale.\n"
+    MESSAGES="${MESSAGES}CEO brain last updated: $LAST_UPDATED — consider running /common-web-app-sync if stale.\n"
   fi
 fi
 

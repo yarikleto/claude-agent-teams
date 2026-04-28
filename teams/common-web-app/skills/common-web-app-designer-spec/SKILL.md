@@ -1,5 +1,5 @@
 ---
-name: swe-designer-spec
+name: common-web-app-designer-spec
 description: Designer extracts a design specification from the approved prototype — design tokens (colors, fonts, spacing), component inventory, screen map with annotations, and visual acceptance criteria per screen. This becomes the single source of truth for UI implementation. Use after prototype is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw

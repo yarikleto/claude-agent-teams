@@ -1,5 +1,5 @@
 ---
-name: swe-init
+name: common-web-app-init
 description: Project kickoff — CEO has a natural conversation with the client, plays devil's advocate, crystallizes the product vision into a document with visuals, iterates until approved. No implementation details — pure product thinking. Use at the very start of a new project.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw

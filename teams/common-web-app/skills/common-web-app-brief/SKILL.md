@@ -1,5 +1,5 @@
 ---
-name: swe-brief
+name: common-web-app-brief
 description: CEO revisits the product vision and knowledge base — re-reads everything, checks what's changed, talks to the client, and updates the strategic documents. Use when priorities shift, scope changes, or the CEO needs a full refresh.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
@@ -19,7 +19,7 @@ Read these files (if they exist):
 
 If `--reset` is passed, treat everything as if starting fresh. Otherwise, you're updating.
 
-If NONE of these files exist, tell the user to run `/claude-swe-plugin:swe-init` first and stop.
+If NONE of these files exist, tell the user to run `/common-web-app-init` first and stop.
 
 ## Step 1: Gather intel
 

@@ -1,5 +1,5 @@
 ---
-name: swe-tester-plan
+name: common-web-app-tester-plan
 description: Tester creates a test strategy document from the system design — defines what to test at each pyramid level, chooses test frameworks, maps test coverage to user flows, and establishes the Definition of Done. Use after system design and task breakdown are approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent

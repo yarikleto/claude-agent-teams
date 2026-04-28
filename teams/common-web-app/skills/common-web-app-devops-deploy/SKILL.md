@@ -1,5 +1,5 @@
 ---
-name: swe-devops-deploy
+name: common-web-app-devops-deploy
 description: DevOps sets up the full infrastructure — CI/CD pipeline, Docker, hosting, database, CDN, monitoring, security. Creates handoff guides for actions requiring the client. Works from the system design. Use after system design is approved, before or during sprint.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent

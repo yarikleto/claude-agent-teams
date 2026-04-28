@@ -1,5 +1,5 @@
 ---
-name: swe-architect-design
+name: common-web-app-architect-design
 description: Architect creates a full system design document from the CEO's product vision and the designer's approved prototype. Produces architecture decisions, tech stack, data model, API contracts, component diagrams, and an implementation plan. Use after the product vision and prototype are approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
@@ -17,7 +17,7 @@ Check that these files exist:
 - `.claude/prototypes/` — at least one prototype version
 - `.claude/ceo-brain.md` — CEO knowledge base
 
-If any are missing, tell the user what's needed and suggest running `/claude-swe-plugin:swe-init` first.
+If any are missing, tell the user what's needed and suggest running `/common-web-app-init` first.
 
 If `$ARGUMENTS` contains `--update`, read the existing `.claude/system-design.md` — architect will revise, not start from scratch.
 
