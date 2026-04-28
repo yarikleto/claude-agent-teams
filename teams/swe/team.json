@@ -1,0 +1,8 @@
+{
+  "name": "swe",
+  "description": "A full software engineering team inside Claude Code — CEO orchestrator + 8 specialized agents + 9 skills = from idea to production.",
+  "version": "0.1.0",
+  "author": "Yaroslav P",
+  "license": "MIT",
+  "source": "https://github.com/yarikleto/claude-swe-plugin"
+}

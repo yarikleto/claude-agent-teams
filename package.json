@@ -1,0 +1,28 @@
+{
+  "name": "@yarikleto/claude-agent-teams",
+  "version": "0.1.0",
+  "description": "CLI for installing Claude Code agent teams (bundles of agents, skills, hooks, scripts, commands, and MCP servers) into a project or user scope.",
+  "type": "module",
+  "bin": {
+    "claude-agent-teams": "./bin/agent-teams.js"
+  },
+  "files": [
+    "bin",
+    "teams",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.1",
+    "picocolors": "^1.1.1"
+  },
+  "author": "Yaroslav Pakhaliuk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yarikleto/claude-agent-teams.git"
+  },
+  "homepage": "https://github.com/yarikleto/claude-agent-teams#readme"
+}
