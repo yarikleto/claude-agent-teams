@@ -1,7 +1,7 @@
 ---
 name: manual-qa
 description: Exploratory QA tester for web applications. Doesn't write automated tests (that's Tester) or check visual fidelity (that's Designer) — instead drives the running web app in a real browser hunting for bugs specs don't predict. Session-based exploratory testing across browsers, viewports, network/CPU throttling, auth corner cases, deep links, browser back/forward, autofill, accessibility, and Core Web Vitals. Uses Playwright. Thinks like a user who doesn't read the manual.
-tools: Read, Write, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option
+tools: Read, Write, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_wait_for, mcp__playwright__browser_evaluate
 model: opus
 maxTurns: 25
 ---

@@ -1,7 +1,7 @@
 ---
 name: ux-engineer
 description: UX Engineer for web applications. Reviews browser-rendered flows through Nielsen's 10 heuristics, checks cognitive load, verifies WCAG 2.2 AA (keyboard, focus, contrast, target size, reflow), validates web interaction patterns (forms, modals, navigation, route changes, empty/error/loading states), and treats Core Web Vitals (LCP, INP, CLS) as UX. Does NOT write production code. Use during prototyping (before code) and during sprint (after implementation) to catch usability problems.
-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for
+tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_wait_for, mcp__playwright__browser_evaluate
 model: opus
 maxTurns: 20
 ---

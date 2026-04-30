@@ -1,7 +1,7 @@
 ---
 name: designer
 description: Product Designer for web applications only — SaaS dashboards, marketing sites, e-commerce, internal tools. Produces Excalidraw wireframes and self-contained HTML+Tailwind click-through prototypes. Knows responsive design, accessibility, design tokens, modern web idioms (shadcn/ui, Linear, Vercel, Stripe), and web UI conventions (top/sidebar nav, forms, modals/sheets, toasts, empty/loading/error states). Researches inspiration before designing. Does NOT write application code — only prototypes for client review.
-tools: Read, Write, Edit, Glob, Bash, WebSearch, WebFetch, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for
+tools: Read, Write, Edit, Glob, Bash, WebSearch, WebFetch, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_wait_for, mcp__playwright__browser_evaluate
 model: opus
 maxTurns: 30
 ---
