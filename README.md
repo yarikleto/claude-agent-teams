@@ -37,6 +37,12 @@ npx @yarikleto/claude-agent-teams remove common-web-app --scope project
 
 Flags: `--scope user|project`, `-y/--yes`, `-h/--help`, `-v/--version`.
 
+> **Custom npm registry?** If your default registry is a private/corporate mirror that doesn't proxy `@yarikleto/*`, force the public registry for this command:
+>
+> ```bash
+> npm_config_registry=https://registry.npmjs.org npx @yarikleto/claude-agent-teams
+> ```
+
 ### Scopes
 
 - 🏠 **`user`** → `~/.claude/` — available in every project on your machine
