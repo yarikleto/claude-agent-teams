@@ -1,14 +1,14 @@
 ---
 name: common-web-app-architect-tasks
-description: Architect decomposes the system design into a hierarchical task breakdown — milestones, tasks, and subtasks with acceptance criteria, dependencies, and parallelization plan. Walking skeleton first, then vertical slices. Use after system design is approved.
+description: Architect decomposes the approved web-app system design into milestones and INVEST-sized vertical-slice tasks (UI + API + business logic + data) with acceptance criteria, dependencies, and a parallelization plan. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing tasks]"
 ---
 
-# SWE Tasks — Decompose System Design into Tasks
+# Architect Tasks — Decompose System Design into Tasks
 
-You are the CEO. The system design is approved. Now you send the **architect** to break it into a concrete, executable task plan that your team can pick up and run with.
+You are the CEO. The system design is approved. Send the **architect** to break it into a concrete, executable task plan the team can pick up and run with.
 
 ## Step 1: Verify inputs
 
@@ -39,17 +39,17 @@ Send **architect** with this brief:
 >
 > ### 1. Identify the Walking Skeleton
 >
-> The walking skeleton is the FIRST milestone — the thinnest possible end-to-end slice that exercises all major architectural components. It's not a prototype. It's real, deployable software.
+> The walking skeleton is the FIRST milestone — the thinnest possible end-to-end slice that exercises every major architectural component (frontend route, API handler, DB, auth, deploy pipeline). It is not a prototype. It is real, deployable software running on the chosen hosting target.
 >
-> Ask: "What is the simplest path a user could take through the entire system that delivers some value?"
+> Ask: "What is the simplest path a real user can take through the entire system that delivers some value?"
 >
-> Example: For an e-commerce app, the walking skeleton might be: view one hardcoded product → add to cart → checkout with one payment method → see confirmation. No search, no filtering, no order history.
+> Example (e-commerce SaaS): sign in → view one hardcoded product → add to cart → checkout with one payment method → see confirmation, all running on the production-like environment with logs flowing. No search, no filtering, no order history.
 >
 > The walking skeleton should take 1-2 weeks to build.
 >
 > ### 2. Slice Vertically, Not Horizontally
 >
-> Every task must be a **vertical slice** — cutting through ALL layers (UI + API + business logic + data). Never create horizontal tasks like "build all the models" or "build all the API endpoints."
+> Every task must be a **vertical slice** through the full web stack — UI route/component + API handler + business logic + persistence (and any cache/queue/auth touched). Never create horizontal tasks like "build all the models," "build all the API endpoints," or "set up the design system."
 >
 > Apply the **Elephant Carpaccio** mindset: always ask "can this be sliced thinner?" Each slice must:
 > - Touch real UI (or API surface if no UI)
@@ -73,9 +73,9 @@ Send **architect** with this brief:
 > **Prefer many S tasks over fewer M tasks. Prefer M over L. Avoid L whenever possible.**
 >
 > Use T-shirt sizing based on complexity, NOT time:
-> - **S** — 1-3 acceptance criteria, touches 1-2 files, one clear concern (e.g., "add email validation to signup form", "add loading spinner to dashboard")
-> - **M** — 4-6 acceptance criteria, touches 3-5 files, one feature slice (e.g., "user login with error handling", "product card with image, price, and add-to-cart")
-> - **L** — 7+ acceptance criteria, touches 5+ files. **This is a warning sign — try to split further.**
+> - **S** — 1-3 acceptance criteria, touches 1-2 files, one clear concern (e.g., "add email validation to signup form", "add loading spinner to dashboard route")
+> - **M** — 4-6 acceptance criteria, touches 3-5 files, one feature slice (e.g., "user login with error handling — route + handler + session", "product card with image, price, and add-to-cart")
+> - **L** — 7+ acceptance criteria, touches 5+ files. **This is a warning sign — split further.**
 >
 > **Splitting rules:**
 > - **L MUST be split** into S or M tasks. No exceptions.
@@ -87,7 +87,8 @@ Send **architect** with this brief:
 > - **By screen section:** "Header with nav" and "Hero section" and "Footer" are three tasks, not "Build the landing page."
 > - **By data operation:** "Create user" and "Update user profile" and "Delete account" are three tasks, not "User CRUD."
 > - **By error path:** Happy path in one task, error handling in another. "Submit order" and "Handle payment failures" are separate.
-> - **By integration boundary:** "Save to database" and "Send confirmation email" are separate even if they're part of one user flow.
+> - **By integration boundary:** "Save to database" and "Enqueue confirmation-email job" are separate even if part of one user flow.
+> - **By auth state:** "Anonymous browse" and "Authenticated browse with personalization" are separate slices.
 >
 > **The test:** Can the tester write ALL tests for this task without reading more than 2-3 files of existing code? If not, the task is too big.
 >

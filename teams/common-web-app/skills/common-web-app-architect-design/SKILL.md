@@ -1,14 +1,14 @@
 ---
 name: common-web-app-architect-design
-description: Architect creates a full system design document from the CEO's product vision and the designer's approved prototype. Produces architecture decisions, tech stack, data model, API contracts, component diagrams, and an implementation plan. Use after the product vision and prototype are approved.
+description: Architect produces a full web-app system design from the approved product vision and prototype — ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, and a phased implementation plan. Use after product vision and prototype are approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing design]"
 ---
 
-# SWE Design — System Design from Vision + Prototype
+# Architect Design — System Design from Vision + Prototype
 
-You are the CEO. The product vision is approved, the prototype is approved. Now you hand it off to your **architect** and **devops** engineer together — the architect designs the application, the DevOps designs how it runs in production. They must work in tandem because architecture choices directly affect infrastructure (and vice versa).
+You are the CEO. The product vision and prototype are approved. Now hand off to the **architect** to produce a full system design for the web application.
 
 ## Step 1: Verify inputs exist
 
@@ -58,15 +58,30 @@ Send **architect** with this brief:
 > **Context:** {constraints — team skills, timeline, product type}
 > **Decision:**
 > - Language: {choice + why}
-> - Framework: {choice + why}
-> - Database: {choice + why}
+> - Backend framework: {Rails / Django / Laravel / NestJS / Express / FastAPI / Hono / Next.js route handlers / etc. + why}
+> - Frontend framework / rendering: {Next.js / Remix / Nuxt / SvelteKit / Astro / SPA / server-rendered + Hotwire/HTMX + why}
+> - Database: {Postgres / MySQL / SQLite / etc. + why}
+> - Cache / queue: {Redis / BullMQ / Sidekiq / Celery / Inngest / Trigger.dev / "none yet" + why}
+> - Object storage: {S3 / R2 / GCS / "none yet" + why}
 > - Other key tools: {each with one-line justification}
 > **Consequences:** {trade-offs}
 >
-> ### ADR-3+: {Other key decisions}
-> <!-- Add ADRs for: authentication approach, hosting/deployment,
->      state management, real-time strategy, file storage, etc.
->      Only decisions that are Type 1 (irreversible) or high-impact. -->
+> ### ADR-3: Authentication & Authorization
+> **Decision:** {sessions vs JWT, identity provider (OIDC/OAuth2 — Auth0/Clerk/WorkOS/Supabase/self-hosted), CSRF strategy, refresh-token approach}
+> **Consequences:** {trade-offs, especially around CORS, mobile/API clients, and account takeover risk}
+>
+> ### ADR-4: Rendering Strategy
+> **Decision:** {SSR / SSG / ISR / SPA / islands / hybrid — and which pages use which}
+> **Consequences:** {SEO, LCP, hydration cost, infra implications}
+>
+> ### ADR-5: Multi-Tenancy (B2B SaaS only)
+> **Decision:** {row-level via tenant_id / schema-per-tenant / cluster-per-tenant — and why}
+> **Consequences:** {isolation guarantees, migration complexity, scaling ceiling}
+>
+> ### ADR-6+: {Other key decisions}
+> <!-- Add ADRs for: hosting/deployment, real-time strategy (WebSockets/SSE/polling),
+>      file uploads, payment processing, email/notification delivery, search,
+>      feature flags. Only Type 1 (irreversible) or high-impact decisions. -->
 >
 > ## 3. System Context (C4 Level 1)
 > <!-- Who uses the system? What external systems does it talk to?
@@ -110,20 +125,46 @@ Send **architect** with this brief:
 >      Group by container. This is what developers will implement. -->
 >
 > ## 8. Key Technical Decisions
-> <!-- Non-ADR-level decisions that developers need to know:
+> <!-- Non-ADR-level decisions developers need to know:
 >      - Project structure / directory layout
->      - Error handling strategy
->      - Logging approach
->      - Testing strategy (unit / integration / e2e split)
->      - Environment configuration approach -->
+>      - Validation library at the API boundary (Zod / Pydantic / class-validator / etc.)
+>      - Error handling strategy (typed errors, HTTP mapping, user-facing messages)
+>      - Logging approach (structured JSON, correlation IDs)
+>      - Testing strategy (unit / integration / e2e split, tooling)
+>      - Environment configuration approach (12-factor, secrets manager) -->
 >
-> ## 9. Scalability Considerations
-> <!-- What happens when load grows? Don't over-engineer — just note:
->      - What's the first bottleneck likely to be?
->      - What's the plan when we hit it?
->      - What did we intentionally NOT optimize yet and why? -->
+> ## 9. Caching & Performance Plan
+> <!-- For each tier, state what's cached and how:
+>      - CDN: which routes/assets, Cache-Control + stale-while-revalidate values
+>      - Reverse proxy / framework cache (e.g. Next.js Data Cache, ISR revalidate windows)
+>      - Redis: sessions, rate-limit counters, computed aggregates
+>      - Database: indexes for hot queries, materialized views if any
+>      - Frontend: Core Web Vitals budgets (LCP, INP, CLS), bundle-size budget
+>      Note what's intentionally NOT cached yet and why. -->
 >
-> ## 10. Implementation Plan
+> ## 10. Observability Plan
+> <!-- - Structured logs with correlation_id propagation
+>      - Tracing (OpenTelemetry spans for HTTP, DB, cache, queue, outbound)
+>      - Metrics (request rate, error rate, p50/p95/p99 latency, queue depth, cache hit ratio)
+>      - RUM + Core Web Vitals collection
+>      - Error tracking (Sentry/etc.) with frontend source maps
+>      - Audit logs for tenant-impacting actions (B2B SaaS) -->
+>
+> ## 11. Security Plan
+> <!-- - Auth model (from ADR-3) — recap the threat surface
+>      - Authorization checks at the data layer (no IDOR)
+>      - Input validation library and where it runs
+>      - CSP, HSTS, SameSite cookies, CSRF approach
+>      - Secrets management
+>      - Dependency scanning in CI
+>      - Rate limiting on auth + write endpoints -->
+>
+> ## 12. Scalability Considerations
+> <!-- - First likely bottleneck (DB connections? a specific endpoint? worker throughput?)
+>      - The plan when we hit it
+>      - What we intentionally did NOT optimize yet, and why -->
+>
+> ## 13. Implementation Plan
 > <!-- Ordered list of work packages. Each package is a thin vertical slice
 >      that delivers testable value.
 >
@@ -142,10 +183,10 @@ Send **architect** with this brief:
 >      Dependencies between phases should be clear.
 >      Parallelize within phases where possible. -->
 >
-> ## 11. Open Questions
+> ## 14. Open Questions
 > <!-- Technical unknowns that need investigation before or during implementation -->
 >
-> ## 12. Risks
+> ## 15. Risks
 > <!-- Pre-mortem: what could go wrong technically?
 >      For each risk: likelihood, impact, mitigation -->
 > ```
@@ -154,10 +195,11 @@ Send **architect** with this brief:
 > - Every tech choice must have a one-line "why." No unjustified decisions.
 > - Default to boring technology. Use innovation tokens only where they create real value.
 > - Start with the simplest architecture that works (Gall's Law). Note where it should evolve.
-> - The implementation plan must be in thin vertical slices. Each phase delivers something testable.
+> - The implementation plan is in thin vertical slices. Each phase delivers something testable.
 > - Create Excalidraw diagrams for sections 3, 4, and 5. Call `read_me` first.
-> - Reference the product vision and prototype throughout — the design must serve the product, not the other way around.
+> - Reference the product vision and prototype throughout — the design serves the product, not the other way around.
 > - If you have strong doubts about a product decision, flag it in Open Questions — don't silently reinterpret the vision.
+> - This is a **web application**. If something in the vision implies mobile-native, desktop, embedded, or non-web targets, flag it instead of designing it.
 
 ## Step 3: Review the design
 
