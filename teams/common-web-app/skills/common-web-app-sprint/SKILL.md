@@ -108,9 +108,10 @@ Send **developer** with this brief:
 > Goal: {paste the task goal here}
 > Acceptance Criteria: {paste the acceptance criteria here}
 > Visual Criteria: {paste visual criteria here, if any}
+> Verifies: {paste the TC-IDs the task declares — these are the system-level verification criteria your implementation must advance}
 > Suggested Approach: {paste if exists, or omit — this is optional, you decide how to implement}
 >
-> Your objective is to implement the task goal correctly AND verify it with tests. The acceptance criteria define "done."
+> Your objective is to implement the task goal correctly AND verify it with tests. The acceptance criteria define "done" locally; the declared TCs are the system-level contract — read each TC in `.claude/system-design.md` §13 and make sure your implementation actually advances it (the reviewer will check this).
 > Read the relevant system design sections in `.claude/system-design.md`.
 > If the task has visual criteria, read `.claude/design-spec.md` — use the exact design tokens (colors, spacing, fonts, border-radius, shadows) specified there. Don't guess at visual values.
 > Read the existing codebase to match patterns and style.
@@ -168,15 +169,20 @@ Send **reviewer** with this brief:
 > **Anti-Cheat (verify implementation is genuine):**
 > 2. Check for hardcoded values, test-fitted conditionals, stubs, incomplete implementation
 >
+> **Spec Lineage (the spec-driven contract):**
+> 3. For each TC the task declares in `**Verifies:**`, point to the specific code path / endpoint / behaviour in the diff that advances it. If the link is fake (TC says X, code does not do X) — `CHANGES REQUESTED`.
+> 4. Verify acceptance criteria don't contradict or silently weaken the declared TCs. If they do, return `BLOCKER` — the task itself is under-spec'd.
+> 5. Scan the diff for silent regression of TCs the task does NOT declare.
+>
 > **Goal & Test Results:**
-> 3. Run the full test suite — all tests must pass
-> 4. Verify the task GOAL is achieved — does the feature actually work as intended?
-> 5. Verify each acceptance criterion is met
-> 6. Verify developer wrote meaningful tests for the new behavior
+> 6. Run the full test suite — all tests must pass
+> 7. Verify the task GOAL is achieved — does the feature actually work as intended?
+> 8. Verify each acceptance criterion is met
+> 9. Verify developer wrote meaningful tests for the new behavior
 >
 > **Code Quality (only if above all pass):**
-> 7. Review production code for correctness, security, edge cases
-> 8. Review test code for coverage quality
+> 10. Review production code for correctness, security, edge cases
+> 11. Review test code for coverage quality
 >
 > **If APPROVE:** Mark every verified criterion as `[x]` in `.claude/tasks/TASK-{N}.md` (acceptance criteria, visual criteria, UX criteria). Only mark what you actually verified.
 >

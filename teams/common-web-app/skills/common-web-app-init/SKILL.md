@@ -1,6 +1,6 @@
 ---
 name: common-web-app-init
-description: Project kickoff — CEO has a natural conversation with the client, plays devil's advocate, crystallizes the product vision into a document with visuals, iterates until approved. No implementation details — pure product thinking. Use at the very start of a new project.
+description: Project kickoff — CEO has a natural conversation with the client, plays devil's advocate, crystallizes the product vision (the **Specify** phase of the spec-driven loop) with explicit verification criteria, then iterates with the designer on visuals until approved. No implementation details — pure product thinking. Use at the very start of a new project.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--existing to join an existing project]"
@@ -97,6 +97,24 @@ This is a PRODUCT document, not a technical document. No mention of languages, f
 <!-- The absolute minimum that delivers value. Apply the Reid Hoffman test:
      "If you're not embarrassed by v1, you launched too late."
      What's the smallest thing we can ship that makes one user's life better? -->
+
+## Verification Criteria
+<!-- The spec is a CONTRACT, not aspiration. List observable signals — in product
+     terms, not technical ones — that prove this thing is doing what it's supposed
+     to do. Each item must be observable by a human after using the product.
+     The system design and tasks below will trace back to these.
+
+     Examples (web-app SaaS):
+     - VC-1: A new user can complete the core flow (signup → first value moment) in under 3 minutes without help.
+     - VC-2: A returning user can find and resume the action they were doing within 2 clicks.
+     - VC-3: When a user invites a teammate, the teammate sees the same data in the same state.
+     - VC-4: A user can export their data and re-import it without loss.
+
+     If you can't write a verification criterion for something in the vision,
+     it's vague and you should sharpen it. Aim for 3-7 criteria. -->
+
+- [ ] VC-1: ...
+- [ ] VC-2: ...
 
 ## Pre-Mortem
 <!-- Imagine we built this and it failed. Why? List the top 3 risks.

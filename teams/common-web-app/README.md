@@ -20,6 +20,10 @@ The team implements the four-phase **Spec-Driven Development (SDD)** loop that t
 
 Every artefact lands in `.claude/` (vision, design docs, task list, schema, test plan), so the next session — or a different agent — picks up exactly where the last one stopped. The `reviewer` is the verification gate: nothing ships without an explicit `APPROVE`.
 
+### The spec is the contract
+
+The vision document declares **product verification criteria** (`VC-1`, `VC-2`, …) — observable signals that the product is doing what it's supposed to do. The system design declares **technical verification criteria** (`TC-1`, `TC-2`, …) and traces each one back to a `VC`. Every implementation task declares `**Verifies:** TC-...`, and the architect maintains a coverage table in `_overview.md` so no `TC` is left unimplemented. The `reviewer` enforces the lineage at merge time: it's not enough that the local acceptance criteria pass — the diff must genuinely advance the declared `TC`s and must not silently regress others. That's the spec-driven contract.
+
 ## Install
 
 From the published CLI:

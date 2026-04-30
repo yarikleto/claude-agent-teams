@@ -1,6 +1,6 @@
 ---
 name: common-web-app-architect-tasks
-description: Architect decomposes the approved web-app system design into milestones and INVEST-sized vertical-slice tasks (UI + API + business logic + data) with acceptance criteria, dependencies, and a parallelization plan. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
+description: Architect decomposes the approved web-app system design into milestones and INVEST-sized vertical-slice tasks (UI + API + business logic + data) with acceptance criteria, dependencies, and a parallelization plan (the **Tasks** phase of the spec-driven loop). Each task declares which system-design verification criteria it advances, so the spec→implementation lineage is explicit. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing tasks]"
@@ -206,6 +206,17 @@ Send **architect** with this brief:
 > <!-- Tasks marked with ~ can be cut if time runs short (Shape Up approach) -->
 > - ~TASK-0XX: {feature that's nice but not essential}
 > - ~TASK-0XX: ...
+>
+> ## Verification Criteria Coverage
+> <!-- Every TC from system-design.md §13 must be advanced by at least one task.
+>      List each TC and the task(s) that verify it. Flag any TC with NO task
+>      covering it — that's a gap to close before sprint starts. -->
+>
+> | TC | Task(s) | Status |
+> | --- | --- | --- |
+> | TC-1 | TASK-005, TASK-008 | covered |
+> | TC-2 | TASK-006 | covered |
+> | TC-3 | — | **GAP — needs a task** |
 > ````
 >
 > ### File: `.claude/tasks/TASK-001.md` (one file per task)
@@ -216,6 +227,7 @@ Send **architect** with this brief:
 > **Status:** `TODO`
 > **Size:** S | **Type:** setup
 > **Depends on:** nothing
+> **Verifies:** {TC-IDs from system-design §13, comma-separated, or `infrastructure` if pure scaffolding with no direct TC linkage}
 > **Goal:** {what needs to be achieved — the clear, concrete end result. NOT how to implement it}
 > **Acceptance Criteria:**
 > - [ ] {criterion}
@@ -232,6 +244,7 @@ Send **architect** with this brief:
 > **Status:** `TODO`
 > **Size:** M | **Type:** vertical-slice
 > **Depends on:** TASK-001
+> **Verifies:** {TC-IDs from system-design §13, e.g. `TC-1, TC-3` — every non-setup task MUST advance at least one TC}
 > **Screen:** {screen name from design-spec.md, or "none" for backend-only tasks}
 > **Goal:** {what needs to be achieved — the clear, concrete end result. NOT how to implement it}
 > **Acceptance Criteria:**
@@ -256,6 +269,8 @@ Send **architect** with this brief:
 >
 > **Rules:**
 > - **Tasks describe the GOAL, not the HOW.** The Goal field must be a clear, concrete end result — what the user/system can do after this task is done. Implementation details (file names, function signatures, specific patterns) are the developer's decision. You may add a "Suggested Approach" with hints, but it's explicitly optional — the developer is free to ignore it.
+> - **Every non-setup task MUST declare `**Verifies:**`** — at least one TC-ID from `.claude/system-design.md` §13 (Verification Criteria). This is the spec→implementation lineage. If you can't link a task to a TC, either the task is unnecessary or the system design is missing a TC — go fix one of those.
+> - **Coverage check:** every TC in §13 of the system design MUST be advanced by at least one task by the end of the last milestone. List uncovered TCs in `_overview.md` so they can't slip.
 > - One file per task in `.claude/tasks/`. File name = task ID: `TASK-001.md`, `SPIKE-001.md`.
 > - Overview goes in `_overview.md` — milestones, critical path, parallelization, Definition of Done.
 > - Walking skeleton is ALWAYS Milestone 0. No exceptions.
@@ -282,6 +297,7 @@ When the architect returns, read the task breakdown yourself. Check:
 - **Goals, not instructions?** Does each task describe WHAT to achieve, not HOW to implement? If you see file paths, function names, or step-by-step implementation in the Goal field — send back: "Describe the goal, not the implementation. The developer decides how."
 - **Acceptance criteria clear?** Could the developer write meaningful tests from these?
 - **Execution flow specified?** Developer (implements + tests) → reviewer for each task?
+- **Spec lineage closed?** Every non-setup task has a `**Verifies:**` field listing TC-IDs. The Verification Criteria Coverage table in `_overview.md` shows zero gaps — every TC from system-design §13 is advanced by ≥1 task. If there's a gap → send architect back to add a task or re-justify the TC.
 - **100% coverage?** Does the task list account for everything in the system design?
 
 If issues, send architect back with specific feedback.

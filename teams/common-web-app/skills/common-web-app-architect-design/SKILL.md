@@ -1,6 +1,6 @@
 ---
 name: common-web-app-architect-design
-description: Architect produces a full web-app system design from the approved product vision and prototype — ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, and a phased implementation plan. Use after product vision and prototype are approved.
+description: Architect produces a full web-app system design from the approved product vision and prototype (the **Plan** phase of the spec-driven loop) — ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, technical verification criteria that bind back to the vision's product criteria, and a phased implementation plan. Use after product vision and prototype are approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing design]"
@@ -164,7 +164,29 @@ Send **architect** with this brief:
 >      - The plan when we hit it
 >      - What we intentionally did NOT optimize yet, and why -->
 >
-> ## 13. Implementation Plan
+> ## 13. Verification Criteria
+> <!-- The system design is the technical contract. List observable system-level
+>      signals that prove the design serves the product vision's verification
+>      criteria. Each technical criterion (TC) MUST trace back to one or more
+>      product verification criteria (VC) from `.claude/product-vision.md`.
+>
+>      Format:
+>      - TC-1 (verifies VC-1, VC-2): {observable system behaviour, e.g. "POST /signup
+>        returns 201 within 500ms p95 and creates a workspace + owning user in one
+>        transaction; rollback on any partial failure"}
+>      - TC-2 (verifies VC-3): {e.g. "After /invitations/:id/accept, both the
+>        inviter and invitee read the same workspace.* rows under their respective
+>        sessions"}
+>      - TC-3 (verifies VC-1): {e.g. "Login flow: 200 with valid creds + httpOnly
+>        Set-Cookie; 401 with invalid; rate-limited after 5 failures/min/IP"}
+>      - TC-4 (cross-cutting): {e.g. "All multi-tenant queries include tenant_id
+>        in WHERE clause; static analysis check enforces this"}
+>
+>      Aim for 6-15 criteria. Each is something a reviewer or tester can verify
+>      against the running system. If you can't write a TC for an ADR, the ADR
+>      may not be load-bearing — reconsider it. -->
+>
+> ## 14. Implementation Plan
 > <!-- Ordered list of work packages. Each package is a thin vertical slice
 >      that delivers testable value.
 >
@@ -183,10 +205,10 @@ Send **architect** with this brief:
 >      Dependencies between phases should be clear.
 >      Parallelize within phases where possible. -->
 >
-> ## 14. Open Questions
+> ## 15. Open Questions
 > <!-- Technical unknowns that need investigation before or during implementation -->
 >
-> ## 15. Risks
+> ## 16. Risks
 > <!-- Pre-mortem: what could go wrong technically?
 >      For each risk: likelihood, impact, mitigation -->
 > ```
