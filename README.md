@@ -83,7 +83,7 @@ No guessing, no `rm -rf`-ing your `.claude/` folder.
 
 | Team | What it does |
 | --- | --- |
-| [`common-web-app`](./teams/common-web-app) | A full software-engineering org tuned for typical web applications (frontend, backend, full-stack SaaS) — orchestrator + 10 specialized agents (architect, DBA, designer, developer, devops, manual-qa, researcher, reviewer, tester, ux-engineer), 10 skills covering kickoff → sprint → sync, and 5 hooks for session start, iron-rule check, auto-format, save-progress, and post-commit reminders. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin). |
+| [`common-web-app`](./teams/common-web-app) | A **spec-driven** software-engineering org tuned for typical web applications (frontend, backend, full-stack SaaS) — orchestrator + 10 specialized agents (architect, DBA, designer, developer, devops, manual-qa, researcher, reviewer, tester, ux-engineer), 10 skills implementing the **Specify → Design → Plan/Tasks → Implement → Verify** loop, and 5 hooks for session start, iron-rule check, auto-format, save-progress, and post-commit reminders. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin). |
 
 ## Authoring a team
 

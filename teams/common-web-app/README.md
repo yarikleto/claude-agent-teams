@@ -1,8 +1,24 @@
 # common-web-app
 
-A full software-engineering team for typical web applications — a CEO-style orchestrator plus **10 specialized agents**, **10 user-invocable skills**, **5 hooks**, and a Playwright MCP server. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin) and tuned for frontend, backend, and full-stack SaaS work.
+A **spec-driven** software-engineering team for typical web applications — a CEO-style orchestrator plus **10 specialized agents**, **10 user-invocable skills**, **5 hooks**, and a Playwright MCP server. Adapted from [yarikleto/claude-swe-plugin](https://github.com/yarikleto/claude-swe-plugin) and tuned for frontend, backend, and full-stack SaaS work.
 
 > **Web-only by design.** Mobile-native, desktop, games, embedded, CLIs, blockchain, and generic libraries are out of scope — agents will decline.
+
+## Spec-driven by design
+
+The team implements the four-phase **Spec-Driven Development (SDD)** loop that tools like [GitHub Spec Kit](https://github.com/github/spec-kit) and [Kiro](https://kiro.dev/) have made the 2026 standard for agentic coding: **Specify → Plan → Tasks → Implement**, with a steering layer above it and verification baked into the gate. The spec is the contract; the code is what the agents derive from it.
+
+| SDD phase | What it produces | Skill |
+| --- | --- | --- |
+| **Steer** | Project-wide vision, principles, knowledge base | `common-web-app-init` (kickoff), `common-web-app-brief` (refresh), `common-web-app-sync` (incremental) |
+| **Specify** | Product vision with acceptance criteria | `common-web-app-init` |
+| **Design** | UX prototype + system design (ADRs, C4, contracts) | `common-web-app-designer-spec`, `common-web-app-architect-design` |
+| **Plan** | Schema, infra, test strategy as scoped sub-specs | `common-web-app-dba-schema`, `common-web-app-devops-deploy`, `common-web-app-tester-plan` |
+| **Tasks** | INVEST-sized vertical slices from a walking skeleton | `common-web-app-architect-tasks` |
+| **Implement** | Working code per task | `common-web-app-sprint` → `developer` agent |
+| **Verify** | Tests pass, acceptance + spec criteria met | `common-web-app-sprint` → `tester` then `reviewer` (the only path to ship) |
+
+Every artefact lands in `.claude/` (vision, design docs, task list, schema, test plan), so the next session — or a different agent — picks up exactly where the last one stopped. The `reviewer` is the verification gate: nothing ships without an explicit `APPROVE`.
 
 ## Install
 
@@ -19,18 +35,6 @@ node bin/agent-teams.js add common-web-app --scope project
 ```
 
 Remove with `remove` instead of `add`. See the [top-level README](../../README.md) for what gets written where.
-
-## How it fits together
-
-The team is shaped like a small product organization. The lifecycle:
-
-1. **Init** — CEO has a real conversation with the client, plays devil's advocate, crystallizes the product vision. No implementation details yet.
-2. **Design** — architect produces the system design (ADRs, C4, data model, API contracts); designer produces a clickable HTML+Tailwind prototype.
-3. **Plan** — architect breaks the design into INVEST-sized vertical-slice tasks; DBA designs the schema; DevOps wires infrastructure; tester drafts the test strategy.
-4. **Sprint** — CEO drives the execution loop: developer implements → tester verifies → reviewer gates. Nothing ships without `APPROVE`.
-5. **Sync / Brief** — periodic refresh of the strategic knowledge base under `.claude/`.
-
-Every artefact lands in `.claude/` (vision, design docs, task list, schema, test plan), so the next session picks up exactly where the last one stopped.
 
 ## Agents
 

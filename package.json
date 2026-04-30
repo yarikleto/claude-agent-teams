@@ -1,6 +1,6 @@
 {
   "name": "@yarikleto/claude-agent-teams",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CLI for installing Claude Code agent teams (bundles of agents, skills, hooks, scripts, commands, and MCP servers) into a project or user scope.",
   "type": "module",
   "bin": {
