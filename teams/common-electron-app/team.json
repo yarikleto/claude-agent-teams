@@ -1,0 +1,7 @@
+{
+  "name": "common-electron-app",
+  "description": "A spec-driven desktop-app team — CEO orchestrator + 10 specialized agents + 10 skills tuned for cross-platform Electron apps. Drives Specify → Design → Plan/Tasks → Implement → Verify with a developer→tester→reviewer sprint loop. Includes packaging, signing, notarization, and auto-update. Mutually exclusive with common-web-app at the same scope (shared agent names).",
+  "version": "0.1.0",
+  "author": "Yaroslav P",
+  "license": "MIT"
+}
