@@ -67,11 +67,15 @@ Listen. The client might say:
 
 Based on the conversation and findings:
 
-1. **Update `.claude/product-vision.md`** — if scope, platforms, distribution, or auto-update strategy changed
-2. **Update `.claude/ceo-brain.md`** — fresh state, new decisions, updated risks
-3. **Update `CLAUDE.md` Project Context** — if tech stack, commands, or platform support evolved
-4. **Flag stale technical docs** to their owners (architect / data / devops / designer / tester) — don't rewrite them yourself
-5. **Create new diagrams** if the architecture or user flows changed significantly
+1. **Update `.claude/product-vision.md`** — if scope, platforms, distribution, or auto-update strategy changed (CEO edits directly)
+2. **Update `.claude/ceo-brain.md`** — fresh state, new decisions, updated risks (CEO edits directly)
+3. **`CLAUDE.md` Project Context** — if tech stack, commands, or platform support evolved → send **developer** (they know what actually works now)
+4. **Flag stale technical docs** to their owners (architect / data / devops / designer / tester) — never rewrite them yourself
+5. **New diagrams** if architecture or user flows changed significantly:
+   - User-flow / wireframe diagrams → send **designer**
+   - System / IPC / data-flow diagrams → send **architect**
+
+CEO never draws diagrams or writes Project Context — those are delegated.
 
 ## Step 5: Brief summary
 

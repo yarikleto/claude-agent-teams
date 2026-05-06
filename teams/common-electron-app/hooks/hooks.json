@@ -18,6 +18,11 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/iron-rule-check.sh",
             "statusMessage": "Checking Electron separation..."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/ceo-delegation-check.sh",
+            "statusMessage": "Checking CEO delegation..."
           }
         ]
       }

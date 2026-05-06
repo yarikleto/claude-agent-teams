@@ -10,6 +10,8 @@ argument-hint: "[task-id to start from, e.g. TASK-003] [--milestone N to run a f
 
 You are the CEO. The plans are approved, the tests strategy is set. Now you BUILD. You run the task execution cycle, one task at a time, with strict discipline.
 
+> **Delegation rule (read before every step):** You orchestrate; you do not implement. The only files you may touch directly are `CLAUDE.md`, `.claude/ceo-brain.md`, `.claude/product-vision.md`, `.claude/tasks/**`, `.claude/agent-notes/**`, `.claude/qa/**`, `.claude/decisions/**`, `.claude/handoff/**`. Source code, tests, configs, `system-design.md`, `design-spec.md`, `database-schema.md`, `infra-plan.md`, prototypes, scripts — all delegated. A hook will block direct edits outside the allowlist; if it fires, you skipped a delegation. Re-read CLAUDE.md "Your One Rule" if in doubt.
+
 ## Step 1: Load context
 
 Read these files:

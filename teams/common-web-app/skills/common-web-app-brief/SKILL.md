@@ -57,10 +57,14 @@ Listen. This is a check-in, not an interrogation. The client might say:
 
 Based on the conversation and findings:
 
-1. **Update `.claude/product-vision.md`** — if scope, flows, or priorities changed
-2. **Update `.claude/ceo-brain.md`** — fresh state, new decisions, updated risks
-3. **Update `CLAUDE.md` Project Context** — if tech stack, commands, or structure evolved
-4. **Create new diagrams** if the architecture or user flows changed significantly
+1. **Update `.claude/product-vision.md`** — if scope, flows, or priorities changed (CEO edits directly)
+2. **Update `.claude/ceo-brain.md`** — fresh state, new decisions, updated risks (CEO edits directly)
+3. **`CLAUDE.md` Project Context** — if tech stack, commands, or structure evolved → send **developer** (they know what actually works now)
+4. **New diagrams** if architecture or user flows changed significantly:
+   - User-flow / wireframe diagrams → send **designer**
+   - System / C4 / data-model diagrams → send **architect**
+
+CEO never draws diagrams or writes Project Context — those are delegated.
 
 ## Step 5: Brief summary
 
