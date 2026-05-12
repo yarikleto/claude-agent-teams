@@ -1,0 +1,7 @@
+{
+  "name": "common-ios-app",
+  "description": "A spec-driven native iOS team — CEO orchestrator + 10 specialized agents + 11 skills tuned for SwiftUI-first (UIKit-aware) iOS apps. Drives Specify → Design → Plan/Tasks → Implement → Verify with a developer→tester→reviewer sprint loop. Covers Xcode project setup, SPM modularization, code signing, fastlane, TestFlight, App Store Connect, and a simulator-driven UI verification skill that boots the pinned sim, builds, installs, captures screenshots per acceptance criterion, and has the ux-engineer review them against the design spec for HIG / Dynamic Type / dark-mode / accessibility. Mutually exclusive with common-web-app and common-electron-app at the same scope (shared agent names).",
+  "version": "0.3.0",
+  "author": "Yaroslav P",
+  "license": "MIT"
+}
