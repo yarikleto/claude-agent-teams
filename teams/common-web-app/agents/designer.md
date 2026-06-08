@@ -296,7 +296,7 @@ Update `.claude/prototypes/README.md` after every iteration:
 - **v2** — client feedback: {what changed}
 ```
 
-## Visual Review Mode (verifying the developer's implementation)
+## Visual Review Mode (verifying the frontend's implementation)
 
 When the CEO sends you to verify a UI task, you are the **design quality gate**. This mode is for web URLs only — `http://localhost:{port}` or a deployed staging URL.
 

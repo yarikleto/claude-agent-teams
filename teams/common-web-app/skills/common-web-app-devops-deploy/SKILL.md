@@ -203,11 +203,11 @@ Once the client completes their handoff actions (or in parallel for things that 
 > - Preview-environment config — Render preview rules, Railway PR envs, or Vercel/Netlify defaults; DB-branching wiring (Neon/Supabase) per PR
 > - Migration step in CI (Prisma/Drizzle/Alembic) — runs before deploy
 > - Sentry init wiring + source-map upload step in CI
-> - Feature-flag SDK initialization in the app (request from developer)
+> - Feature-flag SDK initialization in the app (request from frontend for the client SDK, backend for server-side init)
 > - Edge / WAF rules in platform config (Cloudflare WAF, Vercel `vercel.json` rate-limit, etc.)
 > - `.env.example` with every required variable documented (DATABASE_URL, SENTRY_DSN, flag SDK keys, third-party API keys)
 >
-> Remember: you CAN create infrastructure and config files. You MUST NOT modify application code — that's the developer's domain. If the app needs a `/health` endpoint, a feature-flag client init, or Sentry instrumentation, request it from the developer.
+> Remember: you CAN create infrastructure and config files. You MUST NOT modify application code — that's the engineers' domain. If the app needs a `/health` endpoint, a feature-flag client init, or Sentry instrumentation, request it from the relevant engineer (backend for server endpoints and instrumentation, frontend for client SDK init).
 
 ## Step 5: Review and present
 

@@ -66,7 +66,7 @@ Conventions used by the bundled team (`teams/common-web-app`):
 
 - **Agent frontmatter:** `name`, `description`, `tools` (comma-separated), `model` (`opus`/`sonnet`/`haiku`), optional `maxTurns`. The `name:` field is the invocation name; the file is renamed to `<slug>-<file>.md` at install but the frontmatter `name:` is unchanged. Two installed teams that both ship an agent with the same `name:` will collide — pick distinct names per team or namespace them in the description.
 - **Skill frontmatter:** `name`, `description`, `user-invocable` (bool), `allowed-tools`, optional `argument-hint`. Skill directory names are **not** prefixed on install, so pick globally-unique slugs (prefix them yourself with the team slug — e.g. `common-web-app-init`, `common-web-app-architect-design`).
-- **Hook scripts:** read the event JSON from stdin (`jq -r ...`), exit 0 to allow, non-zero with stderr to block. Keep them language/framework agnostic — see `teams/common-web-app/scripts/iron-rule-check.sh` for the pattern.
+- **Hook scripts:** read the event JSON from stdin (`jq -r ...`), exit 0 to allow, non-zero with stderr to block. Keep them language/framework agnostic — see `teams/common-web-app/scripts/ceo-delegation-check.sh` for the pattern.
 - **MCP servers:** keep `.mcp.json` minimal. Servers requiring secrets should not be hardcoded.
 
 Minimal `team.json`:

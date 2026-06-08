@@ -229,7 +229,7 @@ Send **designer** with this brief:
 > **Rules:**
 > - Extract EXACT values from the prototype HTML/CSS — don't invent.
 > - Every token must be actually used in the prototype. No theoretical tokens.
-> - Visual acceptance criteria per screen are CRITICAL — reviewer and designer verify against these.
+> - Visual acceptance criteria per screen are CRITICAL — the frontend engineer and designer verify against these.
 > - Component inventory must cover every distinct UI element in the prototype.
 > - Skip sections that don't apply.
 
@@ -241,7 +241,7 @@ Read the design spec. Check:
 - Does every screen have visual acceptance criteria?
 - Is responsive behavior documented per screen?
 - Are interaction states covered?
-- Could a developer implement the UI from this document alone?
+- Could a frontend engineer implement the UI from this document alone?
 
 If gaps, send designer back.
 

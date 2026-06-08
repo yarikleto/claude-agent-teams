@@ -1,6 +1,6 @@
 ---
 name: common-web-app-architect-tasks
-description: Architect decomposes the approved web-app system design into milestones and INVEST-sized vertical-slice tasks (UI + API + business logic + data) with acceptance criteria, dependencies, and a parallelization plan (the **Tasks** phase of the spec-driven loop). Each task declares which system-design verification criteria it advances, so the spec→implementation lineage is explicit. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
+description: Architect decomposes the approved web-app system design into milestones and INVEST-sized tasks, splitting each feature slice into a backend task (API + business logic + data, test-driven) and a dependent frontend task (the UI that consumes it), with acceptance criteria, dependencies, and a parallelization plan (the **Tasks** phase of the spec-driven loop). Each task declares its discipline and which system-design verification criteria it advances, so the spec→implementation lineage is explicit. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing tasks]"
@@ -47,20 +47,27 @@ Send **architect** with this brief:
 >
 > The walking skeleton should take 1-2 weeks to build.
 >
-> ### 2. Slice Vertically, Not Horizontally
+> ### 2. Slice Vertically, Then Split by Discipline
 >
-> Every task must be a **vertical slice** through the full web stack — UI route/component + API handler + business logic + persistence (and any cache/queue/auth touched). Never create horizontal tasks like "build all the models," "build all the API endpoints," or "set up the design system."
+> Think in **vertical feature slices** first — a thin path through the full web stack (UI + API handler + business logic + persistence) that delivers user-visible value. Then split each feature slice into its two single-discipline tasks, because the team has separate backend and frontend engineers:
 >
-> Apply the **Elephant Carpaccio** mindset: always ask "can this be sliced thinner?" Each slice must:
-> - Touch real UI (or API surface if no UI)
-> - Work end-to-end
+> - A **backend task** — the API handler + business logic + persistence for that slice, built test-driven. Declares the contract (endpoint, status codes, response shape).
+> - A **frontend task** — the UI for that slice, consuming the backend contract. `Depends on:` the backend task (or on a contract defined up front, so the two can run in parallel against it).
+>
+> A backend-only feature (no UI) is just a backend task. A frontend-only change (polish, a static page, an empty-state) is just a frontend task.
+>
+> **Splitting by discipline is NOT batching.** Still never create coarse horizontal tasks — not "build all the models," not "build all the endpoints," not "set up the design system." Each backend task is still one thin operation; each frontend task is still one thin screen/section. The backend↔frontend pair keeps the feature vertical even though each task is single-discipline.
+>
+> Apply the **Elephant Carpaccio** mindset: always ask "can this be sliced thinner?" Each task must:
+> - Touch a real API surface (backend) or real UI (frontend)
+> - Move the feature end-to-end when paired with its counterpart
 > - Be visibly different from the previous slice
-> - Deliver testable value
+> - Deliver testable/verifiable value
 >
 > ### 3. Apply INVEST to Every Task
 >
 > - **Independent** — can be developed without waiting for other tasks (minimize coupling)
-> - **Negotiable** — describes the GOAL (what to achieve), not HOW to implement. The developer decides the approach
+> - **Negotiable** — describes the GOAL (what to achieve), not HOW to implement. The engineer decides the approach
 > - **Valuable** — delivers observable value to the user or the system
 > - **Estimable** — clear enough to size (if not, create a spike)
 > - **Small** — 1-3 acceptance criteria is ideal, 4-6 is the max. Smaller = better agent quality
@@ -68,7 +75,7 @@ Send **architect** with this brief:
 >
 > ### 4. Size Each Task — SPLIT AGGRESSIVELY
 >
-> **Smaller tasks = better agent quality.** Each task runs through tester → developer → reviewer, each with isolated context. The smaller the task, the less context each agent needs, the better the results.
+> **Smaller tasks = better agent quality.** Each task runs through one engineer who self-reviews (designer + ux-engineer also check UI tasks), each with isolated context. The smaller the task, the less context each agent needs, the better the results.
 >
 > **Prefer many S tasks over fewer M tasks. Prefer M over L. Avoid L whenever possible.**
 >
@@ -90,7 +97,7 @@ Send **architect** with this brief:
 > - **By integration boundary:** "Save to database" and "Enqueue confirmation-email job" are separate even if part of one user flow.
 > - **By auth state:** "Anonymous browse" and "Authenticated browse with personalization" are separate slices.
 >
-> **The test:** Can the tester write ALL tests for this task without reading more than 2-3 files of existing code? If not, the task is too big.
+> **The test:** Can the engineer implement and cover this task without reading more than 2-3 files of existing code? If not, the task is too big.
 >
 > Create **spike** tasks for unknowns — time-boxed research (always S) that produces a decision or proof of concept, not code.
 >
@@ -128,14 +135,13 @@ Send **architect** with this brief:
 >
 > The longest chain of dependent tasks. Highlight it — this is what determines the total project timeline. All non-critical tasks have slack and can be scheduled flexibly.
 >
-> ### 8. Define the Execution Flow for Each Task
+> ### 8. Tag Each Task with a Discipline and Execution Flow
 >
-> For each implementation task, the execution order is:
-> 1. **Developer** implements the feature with full freedom
-> 2. **Tester** (QA) verifies the goal is achieved with tests
-> 3. **Reviewer** reviews code and test quality
+> Every implementation task carries a `**Discipline:**` — `backend` or `frontend` — so the CEO knows who to route it to. The execution order follows from the discipline:
+> - **backend:** the **backend** engineer implements test-driven (tests + code), self-reviews → DONE.
+> - **frontend:** the **frontend** engineer builds the UI (tests only for genuinely important client logic; the UI is verified visually), self-reviews → **designer** + **ux-engineer** (visual/UX check) → DONE.
 >
-> Note this in the task structure so the team knows the workflow.
+> There is no separate reviewer or tester — each engineer self-reviews (anti-cheat, spec lineage, criteria, security) and owns their own tests. Note the discipline and flow in each task file so the team knows the workflow.
 >
 > ## Output Format
 >
@@ -164,17 +170,18 @@ Send **architect** with this brief:
 >
 > | Status | Meaning | Next Step |
 > |--------|---------|-----------|
-> | `TODO` | Not started | Developer picks it up |
-> | `IN_PROGRESS` | Developer is implementing + testing | Wait for developer |
-> | `IN_REVIEW` | Developer done, reviewer checking | Wait for reviewer |
-> | `CHANGES_REQUESTED` | Reviewer found issues | Developer fixes |
-> | `DONE` | Reviewer approved, all criteria met | Move to next task |
+> | `TODO` | Not started | The task's engineer (frontend/backend) picks it up |
+> | `IN_PROGRESS` | The engineer is implementing | Wait for the engineer |
+> | `IN_REVIEW` | UI task: implementation done, in design/UX review | Wait for designer + ux-engineer |
+> | `CHANGES_REQUESTED` | Tests failing, work incomplete, or designer/UX rejected | The engineer fixes |
+> | `DONE` | Self-reviewed and verified (designer/UX too for UI), all criteria met | Move to next task |
 > | `BLOCKED` | Waiting on another task or external dependency | Resolve blocker first |
 >
 > ## Definition of Done (applies to ALL tasks)
-> - [ ] Developer implemented the feature and wrote tests
+> - [ ] Feature implemented per the acceptance criteria
+> - [ ] Backend task: tests written and passing (TDD). Frontend task: UI verified visually; tests for genuinely important client logic only
 > - [ ] All tests pass (new + regression, no unrelated breakage)
-> - [ ] Reviewer verified goal is achieved, tests are meaningful, code quality is acceptable
+> - [ ] Engineer self-reviewed the goal, spec lineage, tests (per discipline), and security; designer + ux-engineer verified UI tasks
 > - [ ] No linter/typecheck warnings
 > - [ ] Status updated to `DONE`
 >
@@ -226,33 +233,53 @@ Send **architect** with this brief:
 > **Milestone:** 0 — Walking Skeleton
 > **Status:** `TODO`
 > **Size:** S | **Type:** setup
+> **Discipline:** backend
 > **Depends on:** nothing
 > **Verifies:** {TC-IDs from system-design §13, comma-separated, or `infrastructure` if pure scaffolding with no direct TC linkage}
 > **Goal:** {what needs to be achieved — the clear, concrete end result. NOT how to implement it}
 > **Acceptance Criteria:**
 > - [ ] {criterion}
 > - [ ] {criterion}
-> **Suggested Approach (optional):** {brief hints or considerations — the developer decides the actual implementation}
-> **Cycle:** developer only (no tests needed for scaffolding) → reviewer
+> **Suggested Approach (optional):** {brief hints or considerations — the engineer decides the actual implementation}
+> **Cycle:** backend only (no tests needed for scaffolding) → self-review → `DONE`
 > ````
 >
-> ### File: `.claude/tasks/TASK-002.md`
+> ### File: `.claude/tasks/TASK-002.md` (backend half of a feature slice)
 >
 > ````markdown
-> # TASK-002: {Data model foundation}
+> # TASK-002: {Create-account API}
 > **Milestone:** 0 — Walking Skeleton
 > **Status:** `TODO`
-> **Size:** M | **Type:** vertical-slice
+> **Size:** S | **Type:** vertical-slice
+> **Discipline:** backend
 > **Depends on:** TASK-001
 > **Verifies:** {TC-IDs from system-design §13, e.g. `TC-1, TC-3` — every non-setup task MUST advance at least one TC}
-> **Screen:** {screen name from design-spec.md, or "none" for backend-only tasks}
-> **Goal:** {what needs to be achieved — the clear, concrete end result. NOT how to implement it}
+> **Goal:** {what the server can do after this task — the clear, concrete end result. NOT how to implement it}
 > **Acceptance Criteria:**
 > - [ ] {functional criterion}
-> **Visual Criteria:** {from design-spec.md screen section, or "N/A"}
+> **Contract:** {the endpoint + status codes + response shape this exposes — the frontend task consumes it}
+> **Suggested Approach (optional):** {brief hints or considerations — the engineer decides the actual implementation}
+> **Cycle:** backend (TDD: tests + implement) → self-review → `DONE`
+> ````
+>
+> ### File: `.claude/tasks/TASK-003.md` (frontend half of the same feature slice)
+>
+> ````markdown
+> # TASK-003: {Sign-up screen}
+> **Milestone:** 0 — Walking Skeleton
+> **Status:** `TODO`
+> **Size:** S | **Type:** vertical-slice
+> **Discipline:** frontend
+> **Depends on:** TASK-002 (consumes its contract)
+> **Verifies:** {TC-IDs from system-design §13 — every non-setup task MUST advance at least one TC}
+> **Screen:** {screen name from design-spec.md}
+> **Goal:** {what the user can do/see after this task — the clear, concrete end result. NOT how to implement it}
+> **Acceptance Criteria:**
+> - [ ] {functional criterion}
+> **Visual Criteria:** {from design-spec.md screen section}
 > - [ ] {visual criterion, e.g. "Card has shadow-sm, radius-lg, hover:shadow-md"}
-> **Suggested Approach (optional):** {brief hints or considerations — the developer decides the actual implementation}
-> **Cycle:** developer (implements + tests) → reviewer → designer (visual check, if UI task) → `DONE`
+> **Suggested Approach (optional):** {brief hints or considerations — the engineer decides the actual implementation}
+> **Cycle:** frontend (UI; tests only for critical client logic) → self-review → designer + ux-engineer (visual/UX check) → `DONE`
 > ````
 >
 > ### File: `.claude/tasks/SPIKE-001.md`
@@ -268,7 +295,8 @@ Send **architect** with this brief:
 > ````
 >
 > **Rules:**
-> - **Tasks describe the GOAL, not the HOW.** The Goal field must be a clear, concrete end result — what the user/system can do after this task is done. Implementation details (file names, function signatures, specific patterns) are the developer's decision. You may add a "Suggested Approach" with hints, but it's explicitly optional — the developer is free to ignore it.
+> - **Tasks describe the GOAL, not the HOW.** The Goal field must be a clear, concrete end result — what the user/system can do after this task is done. Implementation details (file names, function signatures, specific patterns) are the engineer's decision. You may add a "Suggested Approach" with hints, but it's explicitly optional — the engineer is free to ignore it.
+> - **Every implementation task declares a `**Discipline:**`** — `backend` or `frontend`. A feature slice becomes a backend task plus a dependent frontend task; never one task that spans both lanes.
 > - **Every non-setup task MUST declare `**Verifies:**`** — at least one TC-ID from `.claude/system-design.md` §13 (Verification Criteria). This is the spec→implementation lineage. If you can't link a task to a TC, either the task is unnecessary or the system design is missing a TC — go fix one of those.
 > - **Coverage check:** every TC in §13 of the system design MUST be advanced by at least one task by the end of the last milestone. List uncovered TCs in `_overview.md` so they can't slip.
 > - One file per task in `.claude/tasks/`. File name = task ID: `TASK-001.md`, `SPIKE-001.md`.
@@ -280,7 +308,7 @@ Send **architect** with this brief:
 > - Dependencies are explicit. No hidden coupling.
 > - The critical path is highlighted. The team must know what blocks everything.
 > - Nice-to-haves are marked with ~ and can be cut.
-> - Execution flow is explicit: developer (implements + tests) → reviewer.
+> - Execution flow is explicit per discipline: backend (TDD) → self-review → `DONE`; frontend (UI) → self-review → designer + ux-engineer → `DONE`.
 
 ## Step 3: Review the task breakdown
 
@@ -294,9 +322,10 @@ When the architect returns, read the task breakdown yourself. Check:
 - **Walking skeleton makes sense?** Is it truly end-to-end? Is it thin enough?
 - **Vertical slices?** No horizontal "build all X" tasks?
 - **Dependencies minimize bottlenecks?** Enough parallelism?
-- **Goals, not instructions?** Does each task describe WHAT to achieve, not HOW to implement? If you see file paths, function names, or step-by-step implementation in the Goal field — send back: "Describe the goal, not the implementation. The developer decides how."
-- **Acceptance criteria clear?** Could the developer write meaningful tests from these?
-- **Execution flow specified?** Developer (implements + tests) → reviewer for each task?
+- **Goals, not instructions?** Does each task describe WHAT to achieve, not HOW to implement? If you see file paths, function names, or step-by-step implementation in the Goal field — send back: "Describe the goal, not the implementation. The engineer decides how."
+- **Discipline tagged?** Does every implementation task carry `**Discipline:** backend` or `frontend`, with full-stack features split into a backend task + a dependent frontend task? A task spanning both lanes → send back to split.
+- **Acceptance criteria clear?** Could the engineer verify the task from these — the backend with tests, the frontend visually?
+- **Execution flow specified?** Backend (TDD) → self-review → `DONE`, or frontend (UI) → self-review → designer/UX → `DONE`, for each task?
 - **Spec lineage closed?** Every non-setup task has a `**Verifies:**` field listing TC-IDs. The Verification Criteria Coverage table in `_overview.md` shows zero gaps — every TC from system-design §13 is advanced by ≥1 task. If there's a gap → send architect back to add a task or re-justify the TC.
 - **100% coverage?** Does the task list account for everything in the system design?
 

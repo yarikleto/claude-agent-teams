@@ -2,9 +2,9 @@
 # CEO delegation enforcement: when the CEO (main thread, no agent_type) tries to
 # Edit/Write a file, only allow strategic CEO-owned documents. Anything else —
 # source code, tests, configs, design specs, schemas, infra plans — must be
-# delegated to a sub-agent (developer, architect, designer, dba, devops, ...).
+# delegated to a sub-agent (frontend, backend, architect, designer, dba, devops, ...).
 #
-# Sub-agents (architect, developer, designer, ...) are unaffected: they have a
+# Sub-agents (architect, frontend, backend, designer, ...) are unaffected: they have a
 # non-empty agent_type and pass straight through.
 
 INPUT=$(cat)
@@ -44,12 +44,13 @@ DELEGATION VIOLATION: CEO attempted to edit a non-strategic file directly:
   $REL_PATH
 
 The CEO orchestrates — never implements. Delegate via the Agent tool:
-  - source code, tests, configs, scaffolding  → developer
-  - .claude/system-design.md, ADRs            → architect
-  - .claude/design-spec.md, prototypes/       → designer
-  - .claude/database-schema.md, migrations    → dba
-  - .claude/infra-plan.md, CI/CD              → devops
-  - .claude/research/*                         → researcher
+  - UI, components, client state, styling                      → frontend
+  - APIs, business logic, DB access, migrations, server tests  → backend
+  - .claude/system-design.md, ADRs                             → architect
+  - .claude/design-spec.md, prototypes/                        → designer
+  - .claude/database-schema.md, schema design                  → dba
+  - .claude/infra-plan.md, CI/CD                               → devops
+  - .claude/research/*                                         → researcher
 
 CEO may directly edit only its own strategic documents:
   CLAUDE.md, .claude/ceo-brain.md, .claude/product-vision.md,

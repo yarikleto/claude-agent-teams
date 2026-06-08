@@ -193,10 +193,10 @@ Send **architect** with this brief:
 >      For each component:
 >      - Name and responsibility (one sentence)
 >      - Key dependencies
->      Group by container. This is what developers will implement. -->
+>      Group by container. This is what the engineers will implement. -->
 >
 > ## 8. Key Technical Decisions
-> <!-- Non-ADR-level decisions developers need to know:
+> <!-- Non-ADR-level decisions the engineers need to know:
 >      - Project structure / directory layout
 >      - Validation library at the API boundary (Zod / Pydantic / class-validator / etc.)
 >      - Error handling strategy (typed errors, HTTP mapping, user-facing messages)
@@ -253,7 +253,7 @@ Send **architect** with this brief:
 >      - TC-4 (cross-cutting): {e.g. "All multi-tenant queries include tenant_id
 >        in WHERE clause; static analysis check enforces this"}
 >
->      Aim for 6-15 criteria. Each is something a reviewer or tester can verify
+>      Aim for 6-15 criteria. Each is something an engineer can verify
 >      against the running system. If you can't write a TC for an ADR, the ADR
 >      may not be load-bearing — reconsider it. -->
 >

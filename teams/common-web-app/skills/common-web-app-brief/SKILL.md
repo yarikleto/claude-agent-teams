@@ -59,7 +59,7 @@ Based on the conversation and findings:
 
 1. **Update `.claude/product-vision.md`** — if scope, flows, or priorities changed (CEO edits directly)
 2. **Update `.claude/ceo-brain.md`** — fresh state, new decisions, updated risks (CEO edits directly)
-3. **`CLAUDE.md` Project Context** — if tech stack, commands, or structure evolved → send **developer** (they know what actually works now)
+3. **`CLAUDE.md` Project Context** — if tech stack, commands, or structure evolved → send **backend** (owns the project docs and knows what actually works now; pull in frontend for UI-specific conventions)
 4. **New diagrams** if architecture or user flows changed significantly:
    - User-flow / wireframe diagrams → send **designer**
    - System / C4 / data-model diagrams → send **architect**
