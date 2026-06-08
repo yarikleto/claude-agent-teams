@@ -4,7 +4,7 @@
   "description": "CLI for installing Claude Code agent teams (bundles of agents, skills, hooks, scripts, commands, and MCP servers) into a project or user scope.",
   "type": "module",
   "bin": {
-    "claude-agent-teams": "./bin/agent-teams.js"
+    "claude-agent-teams": "bin/agent-teams.js"
   },
   "files": [
     "bin",
@@ -22,7 +22,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yarikleto/claude-agent-teams.git"
+    "url": "git+https://github.com/yarikleto/claude-agent-teams.git"
   },
   "homepage": "https://github.com/yarikleto/claude-agent-teams#readme"
 }
