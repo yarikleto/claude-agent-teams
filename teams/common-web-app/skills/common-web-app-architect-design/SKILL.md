@@ -1,6 +1,6 @@
 ---
 name: common-web-app-architect-design
-description: Architect produces a full web-app system design from the approved product vision and prototype (the **Plan** phase of the spec-driven loop) — ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, technical verification criteria that bind back to the vision's product criteria, and a phased implementation plan. Use after product vision and prototype are approved.
+description: Architect produces a full web-app system design from the approved product vision and prototype (the **Design** phase of the spec-driven loop) — extracted architecture drivers, deep exploration of each load-bearing (one-way-door) decision weighed against those drivers, ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, technical verification criteria that bind back to the vision's product criteria, and a phased implementation plan. Use after product vision and prototype are approved.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
 argument-hint: "[--update to revise existing design]"
@@ -31,6 +31,49 @@ Send **architect** with this brief:
 > - The latest prototype HTML file — understand what screens, flows, and interactions exist
 > - `.claude/ceo-brain.md` — strategic context, constraints, risks
 >
+> ## Method: drill before you draft
+>
+> Do not fill the template top-to-bottom from defaults — the default choice is not always the right
+> one, and a design is only as good as the decisions under it. Work in four passes; the document is
+> the *output* of the drilling, not the drilling itself.
+>
+> **Pass 1 — Extract the drivers (define what "best" means here).** You can't pick the best design
+> without knowing what it must optimize for. From the vision and prototype, pull the architectural
+> drivers: scale (users, peak RPS, data growth), read/write profile, latency budgets for the key
+> flows, where consistency must be strong vs may be eventual, availability target, data sensitivity /
+> compliance, team size & skills (Conway), time-to-launch, cost ceiling, and which parts will change
+> most. Quantify where the vision gives signal; where it's silent, estimate, mark it *(assumed)*, and
+> raise it in §15. Rank them — the top 3-5 are the lens for every decision. Record them in §1.
+>
+> **Pass 2 — Name the one-way doors (Type 1 decisions).** From the drivers, identify the few
+> decisions that are expensive or impossible to reverse and that dominate the system: architecture
+> style, language/runtime, primary datastore + core data model, auth & tenancy model, rendering
+> strategy, public API contract, and the sync↔async boundaries. These — and only these — get drilled
+> and get an ADR. Decide reversible (Type 2) choices at ~70% information and move on.
+>
+> **Pass 3 — Drill each one-way door (diverge → evaluate → converge).** For each, earn the default:
+> 1. State the decision and which drivers it serves.
+> 2. Put up 2-4 *genuine* contenders — options a competent architect would actually weigh, not
+>    strawmen built to lose. For each: how it scores against the top drivers, what it costs, what it
+>    assumes.
+> 3. Name the trade-off axis explicitly (simplicity vs isolation, latency vs consistency, dev speed
+>    vs ops cost, flexibility vs lock-in). If you can't name the axis, you haven't found the trade-off
+>    yet — keep digging.
+> 4. Converge on the **least-worst for these drivers**, and say plainly what you give up. Boring tech
+>    wins ties.
+> 5. Record **reversibility & confidence**: if this is wrong, how costly is the reversal and what
+>    early signal would reveal it? Cheap to reverse → decide fast. Expensive *and* uncertain → drill
+>    harder now, or defer to the last responsible moment with a written trigger.
+>
+> A short decision matrix (options × top drivers) is encouraged wherever it sharpens the comparison.
+>
+> **Pass 4 — Pre-mortem the whole design.** Before writing it up: "It's 18 months out and this
+> architecture has failed — what happened?" Write the 2-3 most likely failure stories. Check the
+> decisions are *coherent as a set* — do two locally-good choices fight each other (e.g. a
+> stateless-edge runtime against a connection-heavy ORM)? Check for the anti-patterns you refuse
+> (astronaut architecture, distributed monolith, resume-driven, golden hammer). What survives becomes
+> a Risk with mitigation (§16) or an Open Question (§15).
+>
 > From this, produce a full system design document. Save it as `.claude/system-design.md`.
 >
 > The document MUST follow this structure:
@@ -39,18 +82,46 @@ Send **architect** with this brief:
 > # System Design
 > > Version {N} — {date}
 >
-> ## 1. Overview
+> ## 1. Overview & Architecture Drivers
 > <!-- One paragraph: what this system does, in technical terms.
 >      Reference the product vision for the "why." -->
 >
+> **Architecture Drivers** — the forces this design optimizes for, extracted from the product vision
+> (and where the vision is silent, estimated, marked *(assumed)*, and raised in §15). Every ADR below
+> is justified against these, in priority order. Keep only the rows the product gives real signal on,
+> add product-specific drivers, and quantify wherever you can.
+>
+> | Driver | Target / Constraint | Priority |
+> | --- | --- | --- |
+> | Scale | {users yr-1, peak RPS, data growth — e.g. 5k users, ~50 RPS, <10 GB} | must/should/nice |
+> | Read/write profile | {e.g. read-heavy 90/10, write spikes on import} | … |
+> | Latency budget | {p95 per key flow — e.g. <300 ms on /feed} | … |
+> | Consistency | {where strong is required vs where eventual is fine} | … |
+> | Availability | {e.g. 99.9% — best-effort vs always-on} | … |
+> | Data sensitivity | {PII / payments-PCI / health-HIPAA / GDPR residency} | … |
+> | Team & timeline | {team size & skills (Conway), time-to-launch} | … |
+> | Cost ceiling | {bootstrapped vs funded — infra budget} | … |
+> | Evolvability | {which parts are expected to change most} | … |
+>
 > ## 2. Architecture Decision Records
+> <!-- One ADR per load-bearing (Type 1, one-way-door) decision from Pass 2. Each MUST show its drill:
+>      **Drivers:** which of §1's drivers this decision serves
+>      **Alternatives Considered:** ≥2 genuine contenders, each with the trade-off that ruled it out
+>        (real options a competent architect would weigh — not strawmen built to lose)
+>      **Reversibility & Confidence:** cost to reverse if wrong + the early signal that would reveal it
+>      Reversible (Type 2) choices do NOT get an ADR — put them in §8 Key Technical Decisions. -->
 >
 > ### ADR-1: Architecture Style
 > **Status:** Accepted
+> **Drivers:** {which §1 drivers force this — e.g. 2-dev team + 8-week launch + modest scale}
 > **Context:** {why this decision matters}
 > **Decision:** {what we chose — e.g. modular monolith, microservices, serverless}
-> **Alternatives Considered:**
-> - {Option} — rejected because {trade-off}
+> **Alternatives Considered:** (≥2 genuine contenders)
+> - {Option A} — rejected because {trade-off, named on its axis}
+> - {Option B} — rejected because {trade-off, named on its axis}
+> **Reversibility & Confidence:** {e.g. "Reversible at moderate cost — extracting a service later is
+>   weeks, not a rewrite; high confidence given current drivers." or "One-way door — revisit only if
+>   sustained p95 > 1s on /api; until then, decided."}
 > **Consequences:** {what we gain and lose}
 >
 > ### ADR-2: Tech Stack
@@ -215,6 +286,8 @@ Send **architect** with this brief:
 >
 > **Rules:**
 > - Every tech choice must have a one-line "why." No unjustified decisions.
+> - Every load-bearing (one-way-door) decision is *drilled*, not defaulted: ≥2 genuine alternatives, the trade-off named on its axis, the least-worst chosen for §1's drivers. An ADR that only defends the pick is unfinished.
+> - Drill where reversal is expensive; decide reversible (Type 2) choices at ~70% and move on. Don't spend analysis on two-way doors.
 > - Default to boring technology. Use innovation tokens only where they create real value.
 > - Start with the simplest architecture that works (Gall's Law). Note where it should evolve.
 > - The implementation plan is in thin vertical slices. Each phase delivers something testable.
@@ -226,10 +299,15 @@ Send **architect** with this brief:
 ## Step 3: Review the design
 
 When architect returns the document, read it yourself (as CEO). Check:
+- **Drivers are real?** Is §1's Architecture Drivers table concrete and quantified, or vague hand-waving? Every ADR must trace to a driver. Vague drivers produce a vague design.
+- **One-way doors actually drilled?** For each load-bearing ADR: are there ≥2 *genuine* alternatives with the trade-off named, or strawmen that were never real contenders? Send back any ADR that only defends the chosen option.
 - Does the design serve the product vision? Or did the architect over-engineer?
 - Are the ADRs justified? Or is this resume-driven development?
+- **Pre-mortem done?** Do §16 Risks capture the likely failure modes with mitigations, and are the decisions coherent as a set — no two locally-good choices fighting each other?
 - Is the implementation plan in achievable slices?
 - Are there any risks the architect missed that you know about from the client conversation?
+
+If a load-bearing decision is both expensive to reverse and low-confidence, don't rubber-stamp it — send the **researcher** (Agent) to de-risk it with a timeboxed spike, or push it to the last responsible moment with a written trigger, before approving.
 
 If something is off, send architect back with specific feedback.
 
