@@ -2,7 +2,7 @@
 name: common-web-app-architect-tasks
 description: Architect decomposes the approved web-app system design into milestones and INVEST-sized tasks, splitting each feature slice into a backend task (API + business logic + data, test-driven) and a dependent frontend task (the UI that consumes it), with acceptance criteria, dependencies, and a parallelization plan (the **Tasks** phase of the spec-driven loop). Each task declares its discipline and which system-design verification criteria it advances, so the spec→implementation lineage is explicit. Starts with a walking skeleton (real, deployable, end-to-end). Use after system design is approved.
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 argument-hint: "[--update to revise existing tasks]"
 ---
 
@@ -160,9 +160,9 @@ Send **architect** with this brief:
 > - Walking skeleton: Milestone 0 ({N tasks}, ~{N days})
 >
 > ## Dependency Graph
-> <!-- Create an Excalidraw diagram showing milestones as groups,
+> <!-- Embed a Mermaid `flowchart` showing milestones as subgraphs,
 >      tasks as nodes, and dependency arrows between them.
->      Highlight the critical path in red/orange. -->
+>      Mark the critical-path nodes (e.g. a distinct classDef color). -->
 >
 > ## Task Statuses
 >

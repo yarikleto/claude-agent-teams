@@ -2,7 +2,7 @@
 name: common-web-app-brief
 description: CEO revisits the product vision and knowledge base — re-reads everything, checks what's changed, talks to the client, and updates the strategic documents. Use when priorities shift, scope changes, or the CEO needs a full refresh.
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 argument-hint: "[--reset to rebuild from scratch]"
 ---
 

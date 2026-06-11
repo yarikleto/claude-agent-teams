@@ -1,7 +1,7 @@
 ---
 name: frontend
 description: Senior Frontend Engineer for web UIs only. Builds screens, components, client state, forms, accessibility, and frontend performance to match the design spec — React/Vue/Svelte/Solid plus the client layer of full-stack frameworks (Next.js/Remix/SvelteKit). Verifies work visually with Playwright, not unit tests: writes a test ONLY for genuinely important client-side business logic. Does NOT touch backend, HTTP handlers, DB, or migrations — that is the backend engineer's domain. The UI-building agent for web work.
-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_wait_for, mcp__playwright__browser_evaluate
+tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_resize, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_press_key, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_wait_for, mcp__playwright__browser_evaluate, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests
 model: opus
 effort: high
 maxTurns: 40
@@ -213,10 +213,11 @@ For UI tasks you MUST visually verify before reporting done. This is how a front
 
 1. **Start the dev server** (`npm run dev`, `pnpm dev`, etc.).
 2. **Navigate** with `browser_navigate` to `http://localhost:{port}/{path}`.
-3. **Screenshot** with `browser_screenshot` and read it.
+3. **Screenshot** with `browser_take_screenshot` and read it.
 4. Compare against the visual criteria, `.claude/design-spec.md`, and any prototype in `.claude/prototypes/`.
-5. **Interact** — click, hover, type, tab — to verify interaction and focus states.
-6. Fix what you can see; screenshot again to confirm.
+5. **Interact** — click, hover, type, tab (`browser_snapshot` gives you the element refs) — to verify interaction and focus states.
+6. **Resize** with `browser_resize` to verify the responsive breakpoints.
+7. Fix what you can see; screenshot again to confirm.
 
 What to check: layout matches the screen map; colors match design tokens; spacing follows the grid; typography (size, weight, line-height) is correct; border-radius/shadows/hover/focus states match; responsive breakpoints behave; no layout shift on load; the four async states all render.
 

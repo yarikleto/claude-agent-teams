@@ -1,25 +1,23 @@
 #!/bin/bash
-# After a git commit, remind to update task status
-# Runs on PostToolUse for Bash commands containing "git commit"
+# After a git commit, remind the CEO to update task status.
+# PostToolUse stdout is invisible on exit 0 — additionalContext is the
+# documented channel that actually reaches Claude.
 
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
-# Only trigger on git commit commands
 case "$COMMAND" in
-  *"git commit"*|*"git add"*"&&"*"git commit"*)
-    ;;
-  *)
-    exit 0
-    ;;
+  *"git commit"*) ;;
+  *) exit 0 ;;
 esac
 
-# Check if tasks directory exists and has in-progress tasks
-if [ -d ".claude/tasks" ]; then
-  IN_PROGRESS=$(grep -rl '`IN_PROGRESS`\|`TESTING`\|`READY`' .claude/tasks/ 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$IN_PROGRESS" -gt 0 ]; then
-    echo "Committed. Remember to update task status in .claude/tasks/ ($IN_PROGRESS task(s) in progress)."
-  fi
+[ -d ".claude/tasks" ] || exit 0
+
+# Active statuses per the team's task workflow: IN_PROGRESS, IN_REVIEW, CHANGES_REQUESTED
+ACTIVE=$(grep -rl '`IN_PROGRESS`\|`IN_REVIEW`\|`CHANGES_REQUESTED`' .claude/tasks/ 2>/dev/null | wc -l | tr -d ' ')
+if [ "$ACTIVE" -gt 0 ]; then
+  jq -n --arg note "Committed. $ACTIVE task(s) in .claude/tasks/ still carry an active status — if this commit completes one, update its status now." \
+    '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $note}}'
 fi
 
 exit 0

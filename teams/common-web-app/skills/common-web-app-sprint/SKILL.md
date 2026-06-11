@@ -53,7 +53,7 @@ Agent names: `frontend`, `backend`, `architect`, `designer`, `ux-engineer`, `man
 
 ## Client Feedback = Immediate Reprioritization
 
-When the client (заказчик) gives feedback or requests changes — at ANY point, not just at milestone checkpoints — you have FULL authority to reprioritize anything:
+When the client gives feedback or requests changes — at ANY point, not just at milestone checkpoints — you have FULL authority to reprioritize anything:
 
 - **Reorder tasks** — move urgent client requests ahead of planned work
 - **Pause in-progress work** — stop the current implement/review cycle if the task is no longer the priority
@@ -169,13 +169,11 @@ The engineer self-reviewed before returning — anti-cheat, spec lineage, accept
 
 ## Step 5: Design & UX review (tasks with user-facing interface)
 
-If the task involves ANY user-facing interface — web UI, mobile screen, CLI output, API surface, game HUD — it needs design and/or UX review. The scope depends on the project type:
+If the task involves a user-facing surface, it needs design and/or UX review:
 
-- **Web/Mobile/Desktop UI:** Both designer (visual) AND ux-engineer (usability) in parallel
-- **CLI tool:** UX engineer only (check help text, error messages, output formatting, flags). No designer visual review.
-- **API/SDK:** UX engineer only (check DX: naming, consistency, error messages, docs). No designer visual review.
-- **Pure backend/infra:** Skip this step entirely — no user-facing interface.
-- **Game:** Both designer (visual/HUD) AND ux-engineer (controls, onboarding, menu flow)
+- **Web UI (screens, components, flows):** Both designer (visual) AND ux-engineer (usability) in parallel
+- **Web API/BFF surface with no UI:** ux-engineer only — DX review: naming, consistency, error shapes, docs. No designer visual review.
+- **No user-facing surface (internal logic, infra, migrations):** Skip this step entirely.
 
 For tasks with NO user-facing interface, skip to Step 6.
 
@@ -187,7 +185,7 @@ For tasks with NO user-facing interface, skip to Step 6.
 >
 > Use Playwright to visually inspect the implementation:
 > 1. Navigate to the running app with `browser_navigate`
-> 2. Take screenshots of the relevant screens with `browser_screenshot`
+> 2. Take screenshots of the relevant screens with `browser_take_screenshot` (resize with `browser_resize` for breakpoints)
 > 3. Click, hover, and interact to verify states with `browser_click`
 > 4. Compare screenshots against the prototype and design spec
 >
@@ -241,14 +239,9 @@ new: **Status:** `DONE`
 ```
 (A backend task with no UI may still read `IN_PROGRESS` here — set it to `DONE` either way.)
 
-3. **Self-check:** Read the file and verify all checkboxes are `[x]`. Mark any stragglers yourself using `replace_all: true`:
-```
-old: - [ ]
-new: - [x]
-replace_all: true
-```
+3. **Self-check:** Read the file back. Every criterion must now be `[x]`. If any `[ ]` remains, it was NOT verified — never tick it just to make the task look done. Either verify it now (engineer report, green tests, designer/UX verdict) and mark it, or set the status back to `CHANGES_REQUESTED` and return to Step 3.
 
-Zero `[ ]` should remain on a DONE task.
+Zero `[ ]` remain on a DONE task — because every criterion was genuinely verified, not because boxes were bulk-ticked.
 
 Announce:
 > "TASK-{N} done. {Brief summary of what was built.}"
@@ -298,12 +291,11 @@ Every relevant agent reviews the milestone as a whole — not individual tasks, 
 - Do NOT start any next-milestone work until Step 7d is complete and the client confirms
 - Do NOT send agents in background and proceed in parallel — the whole point is to STOP and review
 
-**Which agents review depends on the project type:**
-- **Web/Mobile/Game:** designer + ux-engineer + manual-qa (all three in parallel)
-- **CLI:** ux-engineer + manual-qa (no designer visual review)
-- **API/SDK/Library:** ux-engineer (DX review) + manual-qa
-- **Backend/Infra:** manual-qa only
-- **Always:** manual-qa runs for every project type
+**Which agents review depends on what the milestone shipped:**
+- **Milestone with UI screens:** designer + ux-engineer + manual-qa (all three in parallel)
+- **API-only milestone (web API/BFF, no UI):** ux-engineer (DX review) + manual-qa
+- **No user-facing surface (infra, internal logic):** manual-qa only
+- **Always:** manual-qa runs for every milestone
 
 #### Designer verdict (projects with visual UI)
 
@@ -353,38 +345,20 @@ Every relevant agent reviews the milestone as a whole — not individual tasks, 
 > Exploratory QA for Milestone {N}: "{milestone goal}".
 > Read `.claude/tasks/_overview.md` to understand what was built.
 > Read all DONE task files from this milestone for context.
-> Read `.claude/system-design.md` to understand the project type.
+> Read `.claude/system-design.md` for the architecture context.
 >
-> {Access instructions — pick what matches the project:}
-> {Web/Mobile: "The app is running at http://localhost:{port}."}
-> {CLI: "The CLI is built at {path}."}
-> {API: "The API is running at http://localhost:{port}."}
-> {Game: "The game is running at {path/URL}."}
-> {Library/SDK: "The package is at {path}."}
-> {Backend/Infra: "The service is running at {endpoint}."}
+> The app is running at http://localhost:{port} — start the dev server via Bash if it isn't.
 >
 > Charter: Explore the milestone as a whole — cross-feature interactions, end-to-end workflows, edge cases that individual task reviews wouldn't catch.
 >
-> Pick focus areas appropriate to this project type:
->
-> **All project types:**
-> - Smoke test: core flow this milestone enables
+> Focus areas:
+> - Smoke test: the core flow this milestone enables
 > - Cross-feature interactions: do features from different tasks work together?
 > - Input edge cases: special characters, boundary values, empty states, overflow
 > - Error recovery: trigger errors, then continue normally
->
-> **Web/Mobile/Game (has visual UI):**
-> - Cross-viewport: mobile (375px), tablet (768px), desktop (1280px)
-> - Keyboard navigation, state & timing (back button, refresh, rapid clicks)
->
-> **CLI:**
-> - Wrong/missing flags, piping, exit codes, stderr vs stdout, `--help`, `NO_COLOR=1`
->
-> **API/SDK/Library:**
-> - Missing/extra fields, auth edge cases, rate limiting, large/empty payloads
->
-> **Backend/Infra:**
-> - Health checks, restart behavior, concurrent requests, config edge cases
+> - Cross-viewport: mobile (360px), tablet (768px), desktop (1280px)
+> - Keyboard navigation, state & timing (back button, refresh, rapid clicks, two-tab consistency)
+> - The API behind the UI (via curl): missing/extra fields, auth edge cases, rate limiting, large/empty payloads
 >
 > Take screenshots or save output as evidence.
 >

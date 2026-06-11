@@ -1,40 +1,27 @@
 #!/bin/bash
-# Remind to save progress before session ends
-# Checks if there are in-progress tasks or uncommitted changes
+# Warn about unfinished business when the CEO stops responding.
+# Stop-hook stdout/stderr are invisible on exit 0 — systemMessage is the
+# documented channel for a non-blocking warning the user actually sees.
 
-TASKS_DIR=".claude/tasks"
-HAS_ISSUES=false
-MESSAGES=""
+WARNINGS=""
 
-# Check for in-progress tasks
-if [ -d "$TASKS_DIR" ]; then
-  IN_PROGRESS=$(grep -rl '`IN_PROGRESS`\|`TESTING`\|`IN_REVIEW`\|`READY`' "$TASKS_DIR" 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$IN_PROGRESS" -gt 0 ]; then
-    HAS_ISSUES=true
-    MESSAGES="${MESSAGES}WARNING: $IN_PROGRESS task(s) still in progress — update their status in .claude/tasks/ before ending.\n"
+# Active statuses per the team's task workflow: IN_PROGRESS, IN_REVIEW, CHANGES_REQUESTED
+if [ -d ".claude/tasks" ]; then
+  ACTIVE=$(grep -rl '`IN_PROGRESS`\|`IN_REVIEW`\|`CHANGES_REQUESTED`' .claude/tasks/ 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$ACTIVE" -gt 0 ]; then
+    WARNINGS="$ACTIVE task(s) still active in .claude/tasks/ — have the CEO update their status before ending."
   fi
 fi
 
-# Check for uncommitted changes
-if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
   UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
   if [ "$UNCOMMITTED" -gt 0 ]; then
-    HAS_ISSUES=true
-    MESSAGES="${MESSAGES}WARNING: $UNCOMMITTED uncommitted file(s) — commit your work before ending.\n"
+    WARNINGS="${WARNINGS:+$WARNINGS }$UNCOMMITTED uncommitted file(s) — have the CEO commit before ending."
   fi
 fi
 
-# Check if ceo-brain needs updating
-if [ -f ".claude/ceo-brain.md" ]; then
-  LAST_UPDATED=$(grep -o 'Last updated: [0-9-]*' .claude/ceo-brain.md 2>/dev/null | head -1)
-  if [ -n "$LAST_UPDATED" ]; then
-    MESSAGES="${MESSAGES}CEO brain last updated: $LAST_UPDATED — consider running /common-web-app-sync if stale.\n"
-  fi
-fi
-
-if [ "$HAS_ISSUES" = true ]; then
-  echo -e "$MESSAGES" >&2
-  exit 0
+if [ -n "$WARNINGS" ]; then
+  jq -n --arg msg "$WARNINGS" '{systemMessage: $msg}'
 fi
 
 exit 0

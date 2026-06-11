@@ -2,7 +2,7 @@
 name: common-web-app-dba-schema
 description: DBA designs the database schema for a web application from the system design — tables, indexes, constraints, RLS, zero-downtime migration plan. Defaults to Postgres + Redis. Produces .claude/database-schema.md. Use after system design is approved.
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 argument-hint: "[--update to revise existing schema]"
 ---
 
@@ -52,12 +52,11 @@ Send **dba** with this brief:
 > **Multi-tenancy model:** {single DB + tenant_id + RLS | schema-per-tenant | DB-per-tenant} — {why}
 >
 > ## 2. ER Diagram
-> <!-- Create an Excalidraw diagram showing:
->      - All entities as boxes with key columns
+> <!-- Embed a Mermaid `erDiagram` showing:
+>      - All entities with key columns
 >      - Relationships with cardinality (1:1, 1:N, M:N)
 >      - Junction tables for M:N relationships
->      - Tenant boundary highlighted
->      - Color-code by domain area if applicable -->
+>      - Tenant-scoped tables noted (e.g. a `tenant_id FK` attribute on each) -->
 >
 > ## 3. Tables
 >

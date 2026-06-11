@@ -218,7 +218,7 @@ Use the right zoom level for the audience:
 - **Component:** for developers. Internal structure of one container.
 - **Code:** rarely needed. Only for complex, critical modules.
 
-Create Excalidraw diagrams for architecture. Call `mcp__claude_ai_Excalidraw__read_me` first to learn the format.
+Express diagrams as Mermaid blocks (`flowchart`, `C4Context`/`C4Container`, `erDiagram`) embedded in the design doc — they render anywhere markdown does and need no extra tooling. If the Excalidraw MCP tools are available in your session, you may additionally create an Excalidraw board (call `mcp__claude_ai_Excalidraw__read_me` first to learn the format) — but the Mermaid version in the doc is the canonical artifact.
 
 ### Design Documents
 For significant technical decisions, write a design doc:

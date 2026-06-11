@@ -2,7 +2,7 @@
 name: common-web-app-designer-spec
 description: Designer extracts a web design specification from the approved HTML prototype — design tokens (CSS custom properties for color/type/spacing/radius/shadow), component inventory, screen map with visual acceptance criteria per screen, responsive behavior, and interaction states. This becomes the single source of truth for UI implementation. Use after the prototype is approved.
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 argument-hint: "[--update to revise existing spec]"
 ---
 

@@ -40,6 +40,8 @@ node bin/agent-teams.js add common-web-app --scope project
 
 Remove with `remove` instead of `add`. See the [top-level README](../../README.md) for what gets written where.
 
+> **One `common-*-app` team per scope.** The sibling teams (`common-electron-app`, `common-ios-app`) ship agents with the same `name:` (`architect`, `designer`, `devops`, `manual-qa`, `researcher`, `ux-engineer`), the same `playwright` MCP server, and their own CEO bootstrap. Installing two into the same scope makes those agent names ambiguous — and removing one team deletes the shared `playwright` server out from under the other.
+
 ## Agents
 
 Nine role-specific agents, all running on `opus`. They install as `common-web-app-<role>.md` but keep their original `name:` in frontmatter — so when you delegate, refer to them as `architect`, `backend`, `frontend`, etc.
@@ -51,7 +53,7 @@ Each agent knows what is *not* its job: `architect` doesn't write code, `fronten
 | `architect` | VP of Engineering. Picks framework, auth, rendering strategy (SSR/SSG/ISR/SPA/islands), multi-tenancy, caching, observability. Writes ADRs and design docs. Does not write code. |
 | `backend` | Senior Backend Engineer. HTTP APIs, business logic, persistence, auth, web security, backend performance, migrations + the server layer of full-stack frameworks. Test-driven by default (red-green-refactor). Does not touch the UI. |
 | `dba` | Database Master. Postgres + Redis by default. Schemas, indexes, RLS, zero-downtime migrations, idempotency keys, transactional outbox, multi-tenant patterns, serverless connection pooling. |
-| `designer` | Product Designer. Excalidraw wireframes + self-contained HTML+Tailwind prototypes. Researches inspiration first; does not write application code. |
+| `designer` | Product Designer. Low-fi wireframes + self-contained HTML+Tailwind prototypes. Researches inspiration first; does not write application code. |
 | `devops` | DevOps/Platform. CI/CD, Docker, web hosting (Vercel/Netlify/Railway/Render/Fly/Cloudflare), managed Postgres, CDN, SSL, previews, feature flags, WAF. PaaS over K8s; managed over self-hosted. |
 | `frontend` | Senior Frontend Engineer. Screens, components, client state, forms, accessibility, frontend performance (React/Vue/Svelte/Solid + framework client layer). Verifies visually with Playwright; writes tests only for genuinely important client logic. Does not touch the backend. |
 | `manual-qa` | Exploratory QA in a real browser via Playwright. Hunts bugs specs don't predict — viewports, throttling, deep links, autofill, a11y corners, Core Web Vitals. |
@@ -83,8 +85,8 @@ Five hooks make the team's conventions enforceable instead of advisory. Hook com
 | `SessionStart` | — | `session-start.sh` | Seed each session with project context from `.claude/`. |
 | `PreToolUse` | `Edit\|Write` | `ceo-delegation-check.sh` | Block the CEO from editing non-strategic files directly — everything but its own planning docs must be delegated to an agent. |
 | `PostToolUse` | `Edit\|Write` (async) | `auto-format.sh` | Format the just-edited file using whatever tool the repo already uses. |
-| `PostToolUse` | `Bash` | `post-commit-remind.sh` | After commit-style shell commands, surface follow-ups (task status, sync, etc.). |
-| `Stop` | — | `stop-save-progress.sh` | Persist what changed in the session before it ends. |
+| `PostToolUse` | `Bash` | `post-commit-remind.sh` | After a `git commit`, nudge the CEO (via `additionalContext`) to update task statuses that are still active. |
+| `Stop` | — | `stop-save-progress.sh` | Warn the user (via `systemMessage`) about active tasks or uncommitted work when the CEO stops. |
 
 ## MCP servers
 
@@ -93,6 +95,8 @@ Five hooks make the team's conventions enforceable instead of advisory. Hook com
 | `playwright` | `npx @playwright/mcp@latest` | `designer`, `frontend`, `manual-qa`, `ux-engineer` — for in-browser screenshots, clicks, typing, navigation, key presses. |
 
 `.mcp.json` is **project scope only** — installing the team at user scope silently skips it (Claude Code only reads `.mcp.json` from the working directory).
+
+Diagrams in the design docs are Mermaid, so they need no extra tooling. If your session also has the claude.ai **Excalidraw** connector (`mcp__claude_ai_Excalidraw__*`), the architect and designer will use it for boards and wireframes on top — it's optional; nothing in the team requires it.
 
 ## Layout
 

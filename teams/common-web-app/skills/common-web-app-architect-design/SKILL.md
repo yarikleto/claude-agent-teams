@@ -2,7 +2,7 @@
 name: common-web-app-architect-design
 description: Architect produces a full web-app system design from the approved product vision and prototype (the **Design** phase of the spec-driven loop) — extracted architecture drivers, deep exploration of each load-bearing (one-way-door) decision weighed against those drivers, ADRs (architecture style, framework, DB, auth, rendering strategy, multi-tenancy), C4 context/container diagrams, data model, API contracts, component breakdown, observability + security plan, technical verification criteria that bind back to the vision's product criteria, and a phased implementation plan. Use after product vision and prototype are approved.
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, mcp__claude_ai_Excalidraw__read_me, mcp__claude_ai_Excalidraw__create_view, mcp__claude_ai_Excalidraw__export_to_excalidraw
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 argument-hint: "[--update to revise existing design]"
 ---
 
@@ -156,7 +156,7 @@ Send **architect** with this brief:
 >
 > ## 3. System Context (C4 Level 1)
 > <!-- Who uses the system? What external systems does it talk to?
->      Create an Excalidraw diagram showing:
+>      Embed a Mermaid diagram (`C4Context` or `flowchart`) showing:
 >      - The system as a central box
 >      - Users/personas around it
 >      - External services (auth providers, payment, APIs, etc.)
@@ -170,7 +170,7 @@ Send **architect** with this brief:
 >      - Message broker (if any)
 >      - Cache (if any)
 >      - External services
->      Create an Excalidraw diagram showing containers and how they communicate. -->
+>      Embed a Mermaid diagram (`C4Container` or `flowchart`) showing containers and how they communicate. -->
 >
 > ## 5. Data Model
 > <!-- Core entities and their relationships.
@@ -178,7 +178,7 @@ Send **architect** with this brief:
 >      - Name
 >      - Key fields (not exhaustive — the important ones)
 >      - Relationships to other entities
->      Create an Excalidraw ER diagram or write it as text. -->
+>      Embed a Mermaid `erDiagram` or write it as text. -->
 >
 > ## 6. API Design
 > <!-- Key API endpoints or interfaces.
@@ -291,7 +291,7 @@ Send **architect** with this brief:
 > - Default to boring technology. Use innovation tokens only where they create real value.
 > - Start with the simplest architecture that works (Gall's Law). Note where it should evolve.
 > - The implementation plan is in thin vertical slices. Each phase delivers something testable.
-> - Create Excalidraw diagrams for sections 3, 4, and 5. Call `read_me` first.
+> - Express the diagrams in sections 3, 4, and 5 as Mermaid blocks embedded in the document — they render anywhere markdown does and stay diffable in git.
 > - Reference the product vision and prototype throughout — the design serves the product, not the other way around.
 > - If you have strong doubts about a product decision, flag it in Open Questions — don't silently reinterpret the vision.
 > - This is a **web application**. If something in the vision implies mobile-native, desktop, embedded, or non-web targets, flag it instead of designing it.

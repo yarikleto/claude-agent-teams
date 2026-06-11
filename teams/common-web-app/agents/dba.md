@@ -315,7 +315,7 @@ Web-app DB metrics that matter:
 {Engine and why for THIS web app, with alternatives considered}
 
 ### Schema
-{ER diagram (Excalidraw) + CREATE TABLE or equivalent}
+{Mermaid `erDiagram` + CREATE TABLE or equivalent}
 
 ### Access Patterns
 {Expected queries per user flow and which indexes serve them}

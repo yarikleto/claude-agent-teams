@@ -12,7 +12,7 @@ fi
 # Skip non-code files
 case "$FILE_PATH" in
   *.md|*.txt|*.csv|*.svg|*.png|*.jpg|*.gif|*.ico|*.woff*|*.ttf|*.eot) exit 0 ;;
-  *.lock|*.lockb|*.map|*.min.*) exit 0 ;;
+  *.lock|*.lockb|*.map|*.min.*|*package-lock.json) exit 0 ;;
 esac
 
 # Try project-level formatters first (most common to least)
@@ -27,8 +27,9 @@ fi
 case "$FILE_PATH" in
   *.go)       command -v gofmt &>/dev/null && gofmt -w "$FILE_PATH" 2>/dev/null ;;
   *.rs)       command -v rustfmt &>/dev/null && rustfmt "$FILE_PATH" 2>/dev/null ;;
-  *.py)       command -v ruff &>/dev/null && ruff format "$FILE_PATH" 2>/dev/null || \
-              command -v black &>/dev/null && black --quiet "$FILE_PATH" 2>/dev/null ;;
+  *.py)       if command -v ruff &>/dev/null; then ruff format "$FILE_PATH" 2>/dev/null
+              elif command -v black &>/dev/null; then black --quiet "$FILE_PATH" 2>/dev/null
+              fi ;;
   *.rb)       command -v rubocop &>/dev/null && rubocop -a "$FILE_PATH" 2>/dev/null ;;
   *.swift)    command -v swiftformat &>/dev/null && swiftformat "$FILE_PATH" 2>/dev/null ;;
   *.dart)     command -v dart &>/dev/null && dart format "$FILE_PATH" 2>/dev/null ;;
@@ -37,13 +38,14 @@ case "$FILE_PATH" in
   *.lua)      command -v stylua &>/dev/null && stylua "$FILE_PATH" 2>/dev/null ;;
   *.kt|*.kts) command -v ktlint &>/dev/null && ktlint -F "$FILE_PATH" 2>/dev/null ;;
   *.java)     command -v google-java-format &>/dev/null && google-java-format -i "$FILE_PATH" 2>/dev/null ;;
-  *.cs)       command -v dotnet-format &>/dev/null && dotnet format --include "$FILE_PATH" 2>/dev/null ;;
+  *.cs)       command -v dotnet &>/dev/null && dotnet format --include "$FILE_PATH" 2>/dev/null ;;
   *.php)      command -v php-cs-fixer &>/dev/null && php-cs-fixer fix "$FILE_PATH" 2>/dev/null ;;
   *.c|*.cpp|*.cc|*.h|*.hpp) command -v clang-format &>/dev/null && clang-format -i "$FILE_PATH" 2>/dev/null ;;
   *.hs)       command -v ormolu &>/dev/null && ormolu -i "$FILE_PATH" 2>/dev/null ;;
   *.nim)      command -v nimpretty &>/dev/null && nimpretty "$FILE_PATH" 2>/dev/null ;;
   *.tf)       command -v terraform &>/dev/null && terraform fmt "$FILE_PATH" 2>/dev/null ;;
-  *.json)     command -v jq &>/dev/null && jq . "$FILE_PATH" > "$FILE_PATH.tmp" 2>/dev/null && mv "$FILE_PATH.tmp" "$FILE_PATH" ;;
+  # jq chokes on JSONC (tsconfig and friends) — drop the tmp file instead of leaving it behind
+  *.json)     command -v jq &>/dev/null && { jq . "$FILE_PATH" > "$FILE_PATH.tmp" 2>/dev/null && mv "$FILE_PATH.tmp" "$FILE_PATH" || rm -f "$FILE_PATH.tmp"; } ;;
   *.yaml|*.yml) ;; # No universal YAML formatter
 esac
 
